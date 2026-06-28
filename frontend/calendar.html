@@ -1,0 +1,2582 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Calendar | WarpTask</title>
+
+    <!-- APP uchun kerak fayl -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Warptask img -->
+
+    <link rel="shortcut icon" href="./imgs/warptaskbetaimg.png" />
+
+    <!-- CDNJS uchun kerakli link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Qo'shimcha style fayllari -->
+    <link rel="stylesheet" href="bottom_nav.css" />
+    <link rel="stylesheet" href="root.css" />
+
+    <!-- Asosiy stylelar -->
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        list-style: none;
+        text-decoration: none;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--white);
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: 100vh;
+        margin-top: -12px;
+        position: relative;
+      }
+
+      .time {
+        font-weight: 600;
+      }
+
+      .status-icons {
+        display: flex;
+        gap: 5px;
+      }
+
+      /* Quick Date Picker Button */
+      .quick-date-picker-btn {
+        width: 40px;
+        height: 40px;
+        background: var(--blue);
+        border-radius: 50%;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 99;
+        transition: var(--transition);
+        border: none;
+        box-shadow: var(--element-shadow);
+      }
+
+      .quick-date-picker-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Quick Date Picker Modal */
+      .quick-date-picker-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .quick-date-picker-modal.active {
+        display: flex;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .quick-date-picker-content {
+        background: rgba(28, 28, 30, 0.95);
+        border-radius: 25px;
+        padding: 25px;
+        max-width: 350px;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .quick-date-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .quick-date-header h3 {
+        color: var(--white);
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .close-quick-date {
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 24px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+
+      .close-quick-date:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+      }
+
+      .calendarBtns {
+        position: fixed;
+        top: 5px;
+        right: 10px;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        max-width: 50px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        border: var(--glass-border);
+        box-shadow: var(--shadow);
+        border-radius: 35px;
+        padding: 3px 6px;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
+
+      .quick-date-search {
+        margin-bottom: 20px;
+      }
+
+      .quick-date-search input {
+        width: 100%;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--light-gray);
+        border-radius: 15px;
+        color: var(--white);
+        font-size: 16px;
+      }
+
+      .quick-date-search input:focus {
+        outline: none;
+        border-color: var(--blue);
+      }
+
+      .quick-date-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .quick-date-btn {
+        padding: 15px;
+        background: var(--card);
+        border: none;
+        border-radius: 15px;
+        color: var(--white);
+        font-size: 14px;
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .quick-date-btn:hover {
+        background: var(--light-gray);
+        transform: translateY(-2px);
+      }
+
+      .quick-date-btn i {
+        font-size: 18px;
+      }
+
+      .calendar-date-picker {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .calendar-date-picker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .calendar-date-picker-header button {
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: var(--transition);
+      }
+
+      .calendar-date-picker-header button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .calendar-date-picker-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+
+      .calendar-date-picker-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 14px;
+      }
+
+      .calendar-date-picker-day:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .calendar-date-picker-day.selected {
+        background: var(--blue);
+        color: var(--white);
+      }
+
+      .calendar-date-picker-day.today {
+        background: var(--purple);
+        color: var(--white);
+      }
+
+      .calendar-date-picker-day.other-month {
+        color: var(--light-gray);
+      }
+
+      /* Holiday Styles */
+      .day.holiday {
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 59, 48, 0.1),
+          rgba(255, 149, 0, 0.1)
+        );
+      }
+
+      .day.holiday::before {
+        content: "🎉";
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 10px;
+      }
+
+      .day.holiday.today {
+        background: linear-gradient(135deg, var(--red), var(--orange));
+      }
+
+      .day.holiday.selected {
+        background: linear-gradient(135deg, var(--red), var(--orange));
+      }
+
+      /* Holiday Management Modal */
+      .holiday-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .holiday-modal.active {
+        display: flex;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .holiday-modal-content {
+        background: rgba(28, 28, 30, 0.95);
+        border-radius: 25px;
+        padding: 25px;
+        max-width: 350px;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .holiday-list {
+        margin-top: 15px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .holiday-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .holiday-item span {
+        color: var(--white);
+        font-size: 14px;
+      }
+
+      .holiday-item button {
+        background: var(--red);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      /* Manage Holiday Button */
+      .manage-holiday-btn {
+        width: 40px;
+        height: 40px;
+        background: var(--orange);
+        border-radius: 50%;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 99;
+        border: none;
+        box-shadow: var(--element-shadow);
+      }
+
+      .calendar-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px;
+        margin-bottom: 8px;
+        width: 100%;
+      }
+
+      .year-month-selector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+        position: relative;
+        margin-top: -10px;
+      }
+
+      .month {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(28, 28, 30, 0.5);
+        padding: 5px 12px;
+        border-radius: 30px;
+      }
+
+      .nav-btn {
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        background: rgba(28, 28, 30, 0.8);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blue);
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn:active {
+        transform: scale(0.9);
+        
+      }
+
+      .current-year-month {
+        font-size: 18px;
+        font-weight: 600;
+        min-width: 100px;
+        text-align: center;
+        color: var(--white);
+      }
+
+      #current-month-name {
+        font-weight: 600;
+        font-size: 24 px;
+      }
+
+      .current-year-number-wrapper {
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        box-shadow: var(--shadow);
+        padding: 5px 12px;
+        border-radius: 30px;
+        min-width: 70px;
+        text-align: center;
+      }
+
+      #current-year-number {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--blue);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .year-month-selector {
+          gap: 8px;
+        }
+
+        .month {
+          padding: 4px 10px;
+        }
+
+        .current-year-month {
+          min-width: 85px;
+          font-size: 21px;
+        }
+
+        #current-month-name {
+          font-size: 21px;
+        }
+
+        .current-year-number-wrapper {
+          padding: 4px 10px;
+          min-width: 60px;
+        }
+
+        #current-year-number {
+          font-size: 16px;
+        }
+
+        .nav-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 16px;
+        }
+      }
+
+      .nav-btn {
+        max-width: 32px;
+        width: 100%;
+        padding: 7px 19px;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--blue);
+        cursor: pointer;
+        font-size: 21px;
+      }
+
+      .nav-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .current-year-month {
+        font-size: 20px;
+        font-weight: 700;
+        max-width: 80px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        color: var(--white);
+      }
+
+      #current-year-number {
+        font-size: 25px;
+        font-weight: 800;
+        min-width: 80px;
+        align-items: center;
+        color: var(--white);
+      }
+
+      .calendar {
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        box-shadow: var(--shadow);
+        padding: 18px;
+        border-radius: 36px;
+        margin-bottom: 12px;
+        margin-top: 12px;
+      }
+
+      .weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 12px;
+        text-align: center;
+        font-weight: 500;
+        padding: 2px;
+        color: var(--gray);
+      }
+
+      #addTaskForDateBtn i {
+        animation: iosSpin360 20s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      }
+
+      @keyframes iosSpin360 {
+        0% {
+          transform: rotate(0deg);
+        }
+        71% {
+          transform: rotate(0deg);
+        }
+
+        80% {
+          transform: rotate(360deg);
+        }
+
+        94% {
+          transform: rotate(360deg);
+        }
+
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      @keyframes dayPulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes taskSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes taskSlideOut {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+
+      @keyframes calendarFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .day.selected {
+        animation: dayPulse 0.3s ease;
+      }
+
+      .date-task-item.removing {
+        animation: taskSlideOut 0.3s ease forwards;
+      }
+
+      .nav-btn {
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:active {
+        transform: scale(0.9);
+      }
+
+      .day.today {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .day.today::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 122, 255, 0.1);
+        border-radius: 20px;
+        animation: pulseGlow 2s infinite;
+      }
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      .days-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+      }
+
+      .day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: var(--transition);
+        background: rgba(28, 28, 30, 0.7);
+        font-weight: 500;
+        box-shadow: var(--shadow);
+        font-size: 20px;
+        position: relative;
+      }
+
+      .day.other-month {
+        color: var(--light-gray);
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        
+      }
+
+      .day.today {
+        background: var(--blue);
+        color: var(--white);
+        box-shadow: var(--element-shadow);
+      }
+
+      .day.selected {
+        background: var(--white);
+        color: var(--black);
+      }
+
+      .day.has-tasks {
+        background: var(--lime);
+        color: var(--black);
+        box-shadow: var(--element-shadow);
+      }
+
+      .selected-date-info {
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        margin-top: 12px;
+        margin-bottom: 2px;
+      }
+
+      .selected-date-info h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+        color: var(--gray);
+      }
+
+      .selected-date {
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .selected-day {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--white);
+      }
+
+      .tasks-for-date {
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-bottom: 55px;
+      }
+
+      .tasks-for-date h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: var(--gray);
+      }
+
+      .date-task-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .date-task-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .date-task-checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--light-gray);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .date-task-item.completed .date-task-checkbox {
+        background: var(--green);
+        border: none;
+        box-shadow: var(--element-shadow);
+      }
+
+      .date-task-item.completed .date-task-checkbox::after {
+        content: "✓";
+        color: var(--black);
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .date-task-text {
+        flex: 1;
+        font-size: 16px;
+      }
+
+      .date-task-item.completed .date-task-text {
+        text-decoration: line-through;
+        color: var(--gray);
+      }
+
+      .date-task-category {
+        font-size: 12px;
+        color: var(--light-gray);
+        background: var(--glass-bg);
+        padding: 4px 8px;
+        border-radius: 10px;
+      }
+
+      .task-completion-notification {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        background: var(--glass-bg);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        border: var(--glass-border);
+        border-radius: 32px;
+        padding: 12px 20px;
+        z-index: 1000;
+        animation: warpNotificationIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)
+          forwards;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        max-width: 350px;
+        width: 90%;
+        box-shadow: var(--shadow);
+      }
+
+      .notification-emoji {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 29px;
+      }
+
+      .notification-content {
+        flex: 1;
+      }
+
+      .notification-title {
+        color: var(--green);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .notification-message {
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.3;
+      }
+
+      .notification-meta {
+        color: var(--gray);
+        font-size: 12px;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .notification-close {
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 30px;
+        cursor: pointer;
+        padding: 5px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      @keyframes warpNotificationIn {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-100px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0) scale(1);
+        }
+      }
+      @keyframes warpNotificationOut {
+        from {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0) scale(1);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(-50px) scale(1);
+        }
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 6px;
+        color: var(--white);
+        text-decoration: none;
+        transition: var(--transition);
+        border-radius: 12px;
+      }
+
+      .nav-icon {
+        font-size: 20px;
+      }
+
+      .nav-text {
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .container {
+          padding: 14px;
+        }
+
+        .header h1 {
+          font-size: 28px;
+        }
+
+        .calendar {
+          padding: 15px;
+        }
+
+        .quick-date-picker-btn,
+        .manage-holiday-btn {
+          top: 15px;
+          right: 15px;
+        }
+
+        .manage-holiday-btn {
+          top: 75px;
+        }
+
+        .nav-btn {
+          padding: 7px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Quick Date Picker Button -->
+    <div class="calendarBtns">
+      <button
+        class="quick-date-picker-btn"
+        id="quickDatePickerBtn"
+        style="display: none"
+      >
+        <i class="fas fa-calendar"></i>
+      </button>
+
+      <!-- Manage Holiday Button -->
+      <button class="manage-holiday-btn" id="manageHolidayBtn">
+        <i class="fas fa-star"></i>
+      </button>
+    </div>
+
+    <!-- Quick Date Picker Modal -->
+    <div class="quick-date-picker-modal" id="quickDatePickerModal">
+      <div class="quick-date-picker-content">
+        <div class="quick-date-header">
+          <h3 data-i18n="quickDatePicker">Quick Date Picker</h3>
+          <button class="close-quick-date" id="closeQuickDate">&times;</button>
+        </div>
+
+        <div class="quick-date-search">
+          <input
+            type="text"
+            id="dateSearchInput"
+            placeholder="Search date (e.g., 'January 15')"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="quick-date-buttons">
+          <button class="quick-date-btn" data-days="0" data-i18n="today">
+            <i class="fas fa-calendar-day"></i> Today
+          </button>
+          <button class="quick-date-btn" data-days="1" data-i18n="tomorrow">
+            <i class="fas fa-sun"></i> Tomorrow
+          </button>
+          <button class="quick-date-btn" data-days="7" data-i18n="nextWeek">
+            <i class="fas fa-calendar-week"></i> Next Week
+          </button>
+          <button class="quick-date-btn" data-days="30" data-i18n="nextMonth">
+            <i class="fas fa-calendar-alt"></i> Next Month
+          </button>
+        </div>
+
+        <div class="calendar-date-picker" id="calendarDatePicker">
+          <!-- Calendar will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Holiday Management Modal -->
+    <div class="holiday-modal" id="holidayModal">
+      <div class="holiday-modal-content">
+        <div class="quick-date-header">
+          <h3 data-i18n="manageHoliday">Manage Holidays</h3>
+          <button class="close-quick-date" id="closeHolidayModal">
+            &times;
+          </button>
+        </div>
+
+        <div class="quick-date-search">
+          <input
+            type="text"
+            id="holidayNameInput"
+            placeholder="Holiday name (e.g., 'New Year')"
+          />
+          <div style="margin-top: 10px">
+            <input
+              type="date"
+              id="holidayDateInput"
+              style="
+                width: 100%;
+                padding: 15px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--light-gray);
+                border-radius: 15px;
+                color: var(--white);
+                font-size: 16px;
+              "
+            />
+          </div>
+        </div>
+
+        <button
+          id="addHolidayBtn"
+          data-i18n="addHoliday"
+          style="
+            width: 100%;
+            padding: 15px;
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+          "
+        >
+          <i class="fas fa-plus"></i> Add Holiday
+        </button>
+
+        <div class="holiday-list" id="holidayList">
+          <!-- Holidays will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Calendar Controls -->
+
+      <!-- Calendar -->
+      <div class="calendar">
+        <!-- Calendar Controls -->
+        <div class="calendar-controls">
+          <div class="year-month-selector">
+            <button class="nav-btn" id="prev-month">
+              <i class="fa-solid fa-angle-left"></i>
+            </button>
+            <div class="current-year-month" id="current-year-month">
+              <span id="current-month-name">March</span>
+            </div>
+            <button class="nav-btn" id="next-month">
+              <i class="fa-solid fa-angle-right"></i>
+            </button>
+            <div class="current-year-number-wrapper">
+              <span id="current-year-number">2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="weekdays">
+          <div data-i18n="sun">Sun</div>
+          <div data-i18n="mon">Mon</div>
+          <div data-i18n="tue">Tue</div>
+          <div data-i18n="wed">Wed</div>
+          <div data-i18n="thu">Thu</div>
+          <div data-i18n="fri">Fri</div>
+          <div data-i18n="sat">Sat</div>
+        </div>
+        <div class="days-grid" id="days-grid">
+          <!-- Days will be populated by JavaScript -->
+        </div>
+        <div class="selected-date-info">
+          <div class="selected-date" id="selected-date">No date selected</div>
+          <div class="selected-day" id="selected-day"></div>
+        </div>
+      </div>
+
+      <!-- Selected Date Info -->
+
+      <div class="tasks-for-date" id="tasksForDate">
+        <div class="date-task-list" id="date-task-list">
+          <div class="no-tasks">Select a date to view tasks</div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation -->
+      <div class="nav">
+        <div class="bottom-nav">
+          <span class="nav-indicator"></span>
+
+          <a href="index.html" class="nav-item" data-link>
+            <i class="fa-solid fa-house-circle-check" id="nav-icon"></i>
+          </a>
+          <a href="calendar.html" class="nav-item active" data-link>
+            <i class="fa-solid fa-calendar" id="nav-icon"></i>
+          </a>
+          <a href="add.html" class="nav-item" data-link>
+            <i class="fa-solid fa-plus" id="nav-icon"></i>
+          </a>
+
+          <a href="stats.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-chart-pie"></i>
+          </a>
+          <a href="settings.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-bars"></i>
+          </a>
+        </div>
+        <div class="chat">
+          <a href="xgempage.html" style="color: var(--white)">
+            <i class="fas fa-comments" id="nav-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Calendar functionality
+      let currentYear = new Date().getFullYear();
+      let currentMonth = new Date().getMonth();
+      let selectedDate = null;
+
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const dayNames = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+
+      // Category emojis
+      const categoryEmojis = {
+        work: "💼",
+        personal: "🧩",
+        sport: "🏋️‍♂️",
+        bed: "🛏️",
+        food: "🥪",
+        salah: "📿",
+        shopping: "🛍️",
+        break: "🎮",
+        wash: "🛁",
+        housework: "🏠",
+        health: "🫀",
+        study: "📚",
+        hobby: "🎨",
+      };
+
+      // Get holidays from localStorage
+      function getHolidays() {
+        return JSON.parse(localStorage.getItem("wzHolidays")) || [];
+      }
+
+      // Save holidays to localStorage
+      function saveHolidays(holidays) {
+        localStorage.setItem("wzHolidays", JSON.stringify(holidays));
+      }
+
+      // Check if date is holiday
+      function isHoliday(date) {
+        const holidays = getHolidays();
+        const dateStr = date.toISOString().split("T")[0];
+
+        return holidays.some((holiday) => {
+          const holidayDate = new Date(holiday.date);
+          return holidayDate.toISOString().split("T")[0] === dateStr;
+        });
+      }
+
+      // Get holiday name for date
+      function getHolidayName(date) {
+        const holidays = getHolidays();
+        const dateStr = date.toISOString().split("T")[0];
+
+        const holiday = holidays.find((h) => {
+          const holidayDate = new Date(h.date);
+          return holidayDate.toISOString().split("T")[0] === dateStr;
+        });
+
+        return holiday ? holiday.name : null;
+      }
+
+      // Get tasks from localStorage
+      function getTasks() {
+        return JSON.parse(localStorage.getItem("wzTasks")) || [];
+      }
+
+      // Get tasks for a specific date
+      function getTasksForDate(date) {
+        const tasks = getTasks();
+        const result = [];
+
+        tasks.forEach((task) => {
+          if (task.dueDate) {
+            try {
+              const taskDate = new Date(task.dueDate);
+              if (
+                taskDate.getDate() === date.getDate() &&
+                taskDate.getMonth() === date.getMonth() &&
+                taskDate.getFullYear() === date.getFullYear()
+              ) {
+                result.push(task);
+              }
+            } catch (e) {
+              console.error("Error parsing task date:", e);
+            }
+          }
+
+          if (task.createdAt && !task.dueDate) {
+            try {
+              const taskDate = new Date(task.createdAt);
+              if (
+                taskDate.getDate() === date.getDate() &&
+                taskDate.getMonth() === date.getMonth() &&
+                taskDate.getFullYear() === date.getFullYear()
+              ) {
+                const alreadyExists = result.some((t) => t.id === task.id);
+                if (!alreadyExists) {
+                  result.push(task);
+                }
+              }
+            } catch (e) {
+              console.error("Error parsing task createdAt:", e);
+            }
+          }
+        });
+
+        return result;
+      }
+
+      function updateCalendar() {
+        // Update current month and year display - AJRATILGAN HOLDA
+        const monthNameElement = document.getElementById("current-month-name");
+        const yearNumberElement = document.getElementById(
+          "current-year-number",
+        );
+
+        if (monthNameElement) {
+          monthNameElement.textContent = monthNames[currentMonth];
+        }
+        if (yearNumberElement) {
+          yearNumberElement.textContent = currentYear;
+        }
+
+        // Get first day of month and number of days
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(
+          currentYear,
+          currentMonth + 1,
+          0,
+        ).getDate();
+        const daysInPrevMonth = new Date(
+          currentYear,
+          currentMonth,
+          0,
+        ).getDate();
+
+        // Get today's date for highlighting
+        const today = new Date();
+        const isToday = (day) =>
+          day === today.getDate() &&
+          currentMonth === today.getMonth() &&
+          currentYear === today.getFullYear();
+
+        // Build calendar grid
+        const daysGrid = document.getElementById("days-grid");
+        daysGrid.innerHTML = "";
+
+        // Previous month days
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const day = document.createElement("div");
+          day.className = "day other-month";
+          day.textContent = daysInPrevMonth - i;
+          daysGrid.appendChild(day);
+        }
+
+        // Current month days
+        for (let i = 1; i <= daysInMonth; i++) {
+          const day = document.createElement("div");
+          day.className = "day";
+          day.textContent = i;
+
+          const dateToCheck = new Date(currentYear, currentMonth, i);
+          if (isHoliday(dateToCheck)) {
+            day.classList.add("holiday");
+
+            const holidayName = getHolidayName(dateToCheck);
+            const holidayBadge = document.createElement("div");
+            holidayBadge.style.cssText = `
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 10px;
+        font-family: Inter, sans-serif;
+        color: var(--orange);
+      `;
+            holidayBadge.textContent = "🎉";
+            holidayBadge.title = holidayName || "Holiday";
+            day.appendChild(holidayBadge);
+          }
+
+          const tasksForDate = getTasksForDate(dateToCheck);
+
+          if (tasksForDate.length > 0) {
+            day.classList.add("has-tasks");
+
+            const taskCount = tasksForDate.length;
+
+            const badge = document.createElement("div");
+            badge.style.cssText = `
+        position: absolute;
+        bottom: 2px;
+        ${isHoliday(dateToCheck) ? "left: 2px;" : "right: 2px;"}
+        background: transparent;
+        color: white;
+        font-size: 0;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+      `;
+            badge.textContent = taskCount;
+            day.appendChild(badge);
+            day.style.position = "relative";
+          }
+
+          if (isToday(i)) {
+            day.classList.add("today");
+          }
+
+          if (
+            selectedDate &&
+            selectedDate.getDate() === i &&
+            selectedDate.getMonth() === currentMonth &&
+            selectedDate.getFullYear() === currentYear
+          ) {
+            day.classList.add("selected");
+          }
+
+          day.addEventListener("click", () => selectDate(i));
+          daysGrid.appendChild(day);
+        }
+
+        // Next month days
+        const totalCells = 42;
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+
+        for (let i = 1; i <= remainingCells; i++) {
+          const day = document.createElement("div");
+          day.className = "day other-month";
+          day.textContent = i;
+          daysGrid.appendChild(day);
+        }
+      }
+
+      function selectDate(day) {
+        selectedDate = new Date(currentYear, currentMonth, day);
+
+        const dateString = selectedDate.toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        const dayName = dayNames[selectedDate.getDay()];
+
+        document.getElementById("selected-date").textContent = dateString;
+        document.getElementById("selected-day").textContent = dayName;
+
+        updateTasksForSelectedDate();
+        updateCalendar();
+        addAddTaskButton();
+
+        document
+          .getElementById("quickDatePickerModal")
+          .classList.remove("active");
+      }
+
+      function addAddTaskButton() {
+        const existingBtn = document.getElementById("addTaskForDateBtn");
+        if (existingBtn) {
+          existingBtn.remove();
+        }
+
+        if (!selectedDate) return;
+
+        const addTaskBtn = document.createElement("button");
+        addTaskBtn.id = "addTaskForDateBtn";
+        addTaskBtn.innerHTML = '<i class="fas fa-plus"></i>';
+        addTaskBtn.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 14px;
+  `;
+
+        addTaskBtn.addEventListener("mouseover", () => {
+          addTaskBtn.style.opacity = "0.9";
+          addTaskBtn.style.transform = "scale(0.98)";
+        });
+
+        addTaskBtn.addEventListener("mouseout", () => {
+          addTaskBtn.style.opacity = "1";
+          addTaskBtn.style.transform = "scale(1)";
+        });
+
+        addTaskBtn.addEventListener("click", () => {
+          if (selectedDate) {
+            localStorage.setItem(
+              "selectedDateForTask",
+              selectedDate.toISOString(),
+            );
+            window.location.href =
+              "add.html?date=" + selectedDate.toISOString();
+          }
+        });
+
+        const tasksContainer = document.getElementById("tasksForDate");
+        tasksContainer.appendChild(addTaskBtn);
+      }
+
+      function updateTasksForSelectedDate() {
+        const dateTaskList = document.getElementById("date-task-list");
+
+        if (!selectedDate) {
+          dateTaskList.innerHTML =
+            '<div class="no-tasks">Select a date to view tasks</div>';
+          return;
+        }
+
+        const tasks = getTasksForDate(selectedDate);
+
+        if (tasks.length === 0) {
+          dateTaskList.innerHTML = "";
+          return;
+        }
+
+        dateTaskList.innerHTML = "";
+
+        const sortedTasks = [...tasks].sort((a, b) => {
+          if (a.completed !== b.completed) {
+            return a.completed ? 1 : -1;
+          }
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
+        sortedTasks.forEach((task) => {
+          const taskItem = document.createElement("div");
+          taskItem.className = `date-task-item ${
+            task.completed ? "completed" : ""
+          }`;
+
+          let priorityIndicator = "";
+          if (task.priority === "high") {
+            priorityIndicator =
+              '<span style="color: var(--red); margin-right: 5px;">⚠️</span>';
+          } else if (task.priority === "low") {
+            priorityIndicator =
+              '<span style="color: var(--gray); margin-right: 5px;">↓</span>';
+          }
+
+          let noteIndicator = "";
+          if (task.note && task.note.trim() !== "") {
+            noteIndicator =
+              '<span style="color: var(--blue); margin-left: 5px;" title="Has note">📝</span>';
+          }
+
+          let timeDisplay = "";
+          if (task.dueDate) {
+            const dueDate = new Date(task.dueDate);
+            if (!isNaN(dueDate.getTime())) {
+              const timeString = dueDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              timeDisplay = `<span style="font-size: 12px; color: var(--gray); margin-left: 8px;">${timeString}</span>`;
+            }
+          }
+
+          taskItem.innerHTML = `
+      <div class="date-task-checkbox"></div>
+      <div class="date-task-text">
+        ${priorityIndicator}
+        ${categoryEmojis[task.category] || "📝"} 
+        ${task.text}
+        ${noteIndicator}
+        ${timeDisplay}
+      </div>
+      <div class="date-task-category">${task.category}</div>
+    `;
+
+          const checkbox = taskItem.querySelector(".date-task-checkbox");
+          checkbox.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleTaskCompletion(task.id);
+          });
+
+          taskItem.addEventListener("dblclick", () => {
+            editCalendarTask(task.id);
+          });
+
+          taskItem.addEventListener("click", (e) => {
+            if (!e.target.closest(".date-task-checkbox")) {
+              showTaskDetails(task);
+            }
+          });
+
+          dateTaskList.appendChild(taskItem);
+        });
+      }
+
+      function toggleTaskCompletion(taskId) {
+        const tasks = getTasks();
+        const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+        if (taskIndex === -1) return;
+
+        const wasCompleted = tasks[taskIndex].completed;
+        tasks[taskIndex].completed = !wasCompleted;
+
+        localStorage.setItem("wzTasks", JSON.stringify(tasks));
+
+        updateTasksForSelectedDate();
+        updateCalendar();
+
+        if (!wasCompleted) {
+          showTaskCompletionNotification(tasks[taskIndex]);
+          checkXPForTaskCompletion(tasks[taskIndex]);
+        } else {
+          showCalendarNotification("Task marked as pending", "info");
+        }
+      }
+
+      function editCalendarTask(taskId) {
+        const tasks = getTasks();
+        const task = tasks.find((t) => t.id === taskId);
+
+        if (!task) return;
+
+        const newText = prompt("Edit task:", task.text);
+        if (newText && newText.trim() !== "") {
+          task.text = newText.trim();
+          localStorage.setItem("wzTasks", JSON.stringify(tasks));
+          updateTasksForSelectedDate();
+          showCalendarNotification("Task updated!", "success");
+        }
+      }
+
+      function showTaskDetails(task) {
+        const modal = document.createElement("div");
+        modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  `;
+
+        let dueDateText = "Not set";
+        if (task.dueDate) {
+          const dueDate = new Date(task.dueDate);
+          dueDateText = dueDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        }
+
+        const createdDate = new Date(task.createdAt);
+        const createdDateText = createdDate.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        modal.innerHTML = `
+    <div style="
+      background: rgba(28, 28, 30, 0.95);
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-height: 80vh;
+      overflow-y: auto;
+    ">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      ">
+        <h3 style="margin: 0; color: var(--white); font-size: 20px; display: flex; align-items: center; gap: 10px;">
+          ${categoryEmojis[task.category] || "📝"} 
+          ${task.text}
+          ${
+            task.completed
+              ? '<span style="color: var(--green); font-size: 14px;">(Completed)</span>'
+              : ""
+          }
+        </h3>
+        <button id="closeModalBtn" style="
+          background: none;
+          border: none;
+          color: var(--gray);
+          font-size: 24px;
+          cursor: pointer;
+          padding: 5px;
+        ">×</button>
+      </div>
+      
+      ${
+        task.note && task.note.trim() !== ""
+          ? `
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 20px;
+          margin-bottom: 20px;
+        ">
+          <div style="
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          ">
+            <i class="fas fa-sticky-note"></i>
+            Note
+          </div>
+          <div style="color: var(--white); font-size: 16px; line-height: 1.5;">
+            ${task.note}
+          </div>
+        </div>
+      `
+          : ""
+      }
+      
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+      ">
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+        ">
+          <div style="color: var(--gray); font-size: 12px;">Category</div>
+          <div style="color: var(--white); font-size: 16px; font-weight: 500;">
+            ${task.category.charAt(0).toUpperCase() + task.category.slice(1)}
+          </div>
+        </div>
+        
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+        ">
+          <div style="color: var(--gray); font-size: 12px;">Priority</div>
+          <div style="color: var(--white); font-size: 16px; font-weight: 500; text-transform: capitalize;">
+            ${task.priority || "Medium"}
+          </div>
+        </div>
+        
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+        ">
+          <div style="color: var(--gray); font-size: 12px;">Status</div>
+          <div style="color: ${
+            task.completed ? "var(--green)" : "var(--orange)"
+          }; font-size: 16px; font-weight: 500;">
+            ${task.completed ? "Completed" : "Pending"}
+          </div>
+        </div>
+        
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+        ">
+          <div style="color: var(--gray); font-size: 12px;">Created</div>
+          <div style="color: var(--white); font-size: 14px; font-weight: 500;">
+            ${createdDateText}
+          </div>
+        </div>
+        
+        <div style="
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+          grid-column: span 2;
+        ">
+          <div style="color: var(--gray); font-size: 12px;">Due Date</div>
+          <div style="color: var(--white); font-size: 16px; font-weight: 500;">
+            ${dueDateText}
+          </div>
+        </div>
+      </div>
+      
+      <div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 20px;
+      ">
+        <button id="toggleCompleteBtn" style="
+          padding: 12px;
+          background: ${task.completed ? "var(--orange)" : "var(--green)"};
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        ">
+          <i class="fas fa-${task.completed ? "undo" : "check"}"></i>
+          ${task.completed ? "Mark Pending" : "Mark Complete"}
+        </button>
+        
+        <button id="deleteTaskBtn" style="
+          padding: 12px;
+          background: rgba(255, 59, 48, 0.2);
+          color: var(--red);
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        ">
+          <i class="fas fa-trash"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+  `;
+
+        document.body.appendChild(modal);
+
+        document
+          .getElementById("closeModalBtn")
+          .addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+
+        document
+          .getElementById("toggleCompleteBtn")
+          .addEventListener("click", () => {
+            toggleTaskCompletion(task.id);
+            document.body.removeChild(modal);
+          });
+
+        document
+          .getElementById("deleteTaskBtn")
+          .addEventListener("click", () => {
+            if (confirm("Are you sure you want to delete this task?")) {
+              deleteCalendarTask(task.id);
+              document.body.removeChild(modal);
+            }
+          });
+
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            document.body.removeChild(modal);
+          }
+        });
+      }
+
+      function deleteCalendarTask(taskId) {
+        const tasks = getTasks();
+        const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+        if (taskIndex === -1) return;
+
+        tasks.splice(taskIndex, 1);
+        localStorage.setItem("wzTasks", JSON.stringify(tasks));
+
+        updateTasksForSelectedDate();
+        updateCalendar();
+        showCalendarNotification("Task deleted!", "error");
+      }
+
+      function showTaskCompletionNotification(task) {
+        const existingNotif = document.querySelector(
+          ".task-completion-notification",
+        );
+        if (existingNotif) {
+          existingNotif.style.animation = "fadeOutNotif 0.3s ease forwards";
+          setTimeout(() => existingNotif.remove(), 300);
+        }
+
+        const notification = document.createElement("div");
+        notification.className = "task-completion-notification";
+
+        const emoji = categoryEmojis[task.category] || "✅";
+
+        notification.innerHTML = `
+    <div class="notification-emoji">${emoji}</div>
+    <div class="notification-content">
+      <div class="notification-title">🎉 Completed!</div>
+      <div class="notification-message">${
+        task.text.length > 25 ? task.text.substring(0, 25) + "..." : task.text
+      }</div>
+      <div class="notification-meta">
+        <span>Just now</span>
+      </div>
+    </div>
+    <button class="notification-close">×</button>
+  `;
+
+        document.body.appendChild(notification);
+
+        notification
+          .querySelector(".notification-close")
+          .addEventListener("click", () => {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => notification.remove(), 300);
+          });
+
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => {
+              if (notification.parentNode) {
+                notification.remove();
+              }
+            }, 300);
+          }
+        }, 5000);
+
+        if (navigator.vibrate) {
+          navigator.vibrate([50, 50, 50]);
+        }
+      }
+
+      function showXPEarnedNotification(xpEarned) {
+        const notification = document.createElement("div");
+        notification.className = "task-completion-notification xp-notification";
+
+        notification.innerHTML = `
+    <div class="notification-emoji">⭐</div>
+    <div class="notification-content">
+      <div class="notification-title">Bonus XP Earned!</div>
+      <div class="notification-message">+${xpEarned} XP</div>
+      <div class="notification-meta">
+        <span>Great job! Keep it up!</span>
+      </div>
+    </div>
+    <button class="notification-close">×</button>
+  `;
+
+        document.body.appendChild(notification);
+
+        const existingNotif = document.querySelector(
+          ".task-completion-notification:not(.xp-notification):not(.levelup-notification)",
+        );
+        if (existingNotif) {
+          const rect = existingNotif.getBoundingClientRect();
+          notification.style.top = rect.bottom + 10 + "px";
+        } else {
+          notification.style.top = "20px";
+        }
+
+        notification
+          .querySelector(".notification-close")
+          .addEventListener("click", () => {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => notification.remove(), 300);
+          });
+
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => {
+              if (notification.parentNode) {
+                notification.remove();
+              }
+            }, 300);
+          }
+        }, 4000);
+      }
+
+      function showLevelUpNotification(level) {
+        const notification = document.createElement("div");
+        notification.className =
+          "task-completion-notification levelup-notification";
+
+        notification.innerHTML = `
+    <div class="notification-emoji">🎯</div>
+    <div class="notification-content">
+      <div class="notification-title">LEVEL UP! 🚀</div>
+      <div class="notification-message">Level ${level}</div>
+      <div class="notification-meta">
+        <span>Keep completing tasks</span>
+      </div>
+    </div>
+    <button class="notification-close">×</button>
+  `;
+
+        document.body.appendChild(notification);
+        notification.style.top = "20px";
+
+        notification
+          .querySelector(".notification-close")
+          .addEventListener("click", () => {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => notification.remove(), 300);
+          });
+
+        createConfettiEffect();
+
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = "fadeOutNotif 0.3s ease forwards";
+            setTimeout(() => {
+              if (notification.parentNode) {
+                notification.remove();
+              }
+            }, 300);
+          }
+        }, 8000);
+      }
+
+      function createConfettiEffect() {
+        const colors = [
+          "#007aff",
+          "#34c759",
+          "#ff9500",
+          "#ff3b30",
+          "#af52de",
+          "#ffcc00",
+        ];
+
+        for (let i = 0; i < 30; i++) {
+          const confetti = document.createElement("div");
+          confetti.style.cssText = `
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: 50%;
+      top: 50px;
+      left: ${Math.random() * 100}%;
+      z-index: 1002;
+      animation: confettiFall ${Math.random() * 1 + 1}s linear forwards;
+      pointer-events: none;
+    `;
+
+          document.body.appendChild(confetti);
+
+          if (!document.querySelector("#confetti-style")) {
+            const style = document.createElement("style");
+            style.id = "confetti-style";
+            style.textContent = `
+        @keyframes confettiFall {
+          0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotate(${Math.random() * 360}deg);
+            opacity: 0;
+          }
+        }
+      `;
+            document.head.appendChild(style);
+          }
+
+          setTimeout(() => {
+            if (confetti.parentNode) {
+              confetti.parentNode.removeChild(confetti);
+            }
+          }, 2000);
+        }
+      }
+
+      function checkXPForTaskCompletion(task) {
+        const settings = JSON.parse(localStorage.getItem("wzSettings")) || {};
+        if (settings.achievements === false) return;
+
+        let currentXP = parseInt(localStorage.getItem("wzXP")) || 0;
+
+        let xpEarned = 10;
+
+        if (task.priority === "high") xpEarned += 10;
+        if (task.priority === "urgent") xpEarned += 15;
+
+        if (task.dueDate) {
+          const dueDate = new Date(task.dueDate);
+          const now = new Date();
+          if (dueDate < now) xpEarned += 5;
+        }
+
+        currentXP += xpEarned;
+        localStorage.setItem("wzXP", currentXP);
+
+        const oldLevel = Math.floor((currentXP - xpEarned) / 100) + 1;
+        const newLevel = Math.floor(currentXP / 100) + 1;
+
+        if (newLevel > oldLevel) {
+          setTimeout(() => showLevelUpNotification(newLevel), 600);
+        }
+
+        if (xpEarned > 10) {
+          setTimeout(() => showXPEarnedNotification(xpEarned), 600);
+        }
+      }
+
+      function showCalendarNotification(message, type = "info") {
+        const existingNotif = document.getElementById("calendarNotification");
+        if (existingNotif) {
+          existingNotif.remove();
+        }
+
+        const notification = document.createElement("div");
+        notification.id = "calendarNotification";
+        notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #181818fb;
+    backdrop-filter: blur(20px);
+    border: 1px solid ${
+      type === "success"
+        ? "var(--green)"
+        : type === "error"
+          ? "var(--red)"
+          : "var(--blue)"
+    };
+    border-radius: 20px;
+    padding: 15px 20px;
+    z-index: 1000;
+    animation: slideDown 0.3s ease forwards;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 350px;
+    width: 90%;
+  `;
+
+        const icon = type === "success" ? "✓" : type === "error" ? "✕" : "ℹ";
+        const iconColor =
+          type === "success"
+            ? "var(--green)"
+            : type === "error"
+              ? "var(--red)"
+              : "var(--blue)";
+
+        notification.innerHTML = `
+    <div style="color: ${iconColor}; font-size: 20px; font-weight: bold;">${icon}</div>
+    <div style="color: var(--white); font-size: 16px;">${message}</div>
+  `;
+
+        document.body.appendChild(notification);
+
+        const style = document.createElement("style");
+        style.textContent = `
+    @keyframes slideDown {
+      from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+    @keyframes slideUp {
+      from {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(-50%) translateY(-20px);
+        opacity: 0;
+      }
+    }
+  `;
+        document.head.appendChild(style);
+
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = "slideUp 0.3s ease forwards";
+            setTimeout(() => {
+              if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+              }
+            }, 300);
+          }
+        }, 3000);
+      }
+
+      // ===== QUICK DATE PICKER FUNCTIONALITY =====
+
+      document
+        .getElementById("quickDatePickerBtn")
+        .addEventListener("click", function () {
+          document
+            .getElementById("quickDatePickerModal")
+            .classList.add("active");
+          updateQuickDateCalendar();
+        });
+
+      document
+        .getElementById("closeQuickDate")
+        .addEventListener("click", function () {
+          document
+            .getElementById("quickDatePickerModal")
+            .classList.remove("active");
+        });
+
+      document
+        .getElementById("quickDatePickerModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            this.classList.remove("active");
+          }
+        });
+
+      document.querySelectorAll(".quick-date-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const days = parseInt(this.getAttribute("data-days"));
+          const targetDate = new Date();
+          targetDate.setDate(targetDate.getDate() + days);
+
+          currentYear = targetDate.getFullYear();
+          currentMonth = targetDate.getMonth();
+          selectedDate = targetDate;
+
+          updateCalendar();
+          selectDate(targetDate.getDate());
+
+          document
+            .getElementById("quickDatePickerModal")
+            .classList.remove("active");
+        });
+      });
+
+      function updateQuickDateCalendar() {
+        const container = document.getElementById("calendarDatePicker");
+        const today = new Date();
+        const quickYear = today.getFullYear();
+        const quickMonth = today.getMonth();
+
+        const firstDay = new Date(quickYear, quickMonth, 1).getDay();
+        const daysInMonth = new Date(quickYear, quickMonth + 1, 0).getDate();
+        const daysInPrevMonth = new Date(quickYear, quickMonth, 0).getDate();
+
+        let html = `
+    <div class="calendar-date-picker-header">
+      <button id="quickDatePrevMonth">&lt;</button>
+      <div style="color: red; font-weight: 600;">
+        ${monthNames[quickMonth]} ${quickYear}
+      </div>
+      <button id="quickDateNextMonth">&gt;</button>
+    </div>
+    
+    <div class="weekdays" style="margin-bottom: 10px;">
+      <div style="color: var(--gray); font-size: 12px;">Sun</div>
+      <div style="color: var(--gray); font-size: 12px;">Mon</div>
+      <div style="color: var(--gray); font-size: 12px;">Tue</div>
+      <div style="color: var(--gray); font-size: 12px;">Wed</div>
+      <div style="color: var(--gray); font-size: 12px;">Thu</div>
+      <div style="color: var(--gray); font-size: 12px;">Fri</div>
+      <div style="color: var(--gray); font-size: 12px;">Sat</div>
+    </div>
+    <div class="calendar-date-picker-grid">
+  `;
+
+        for (let i = firstDay - 1; i >= 0; i--) {
+          html += `<div class="calendar-date-picker-day other-month">${daysInPrevMonth - i}</div>`;
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+          const date = new Date(quickYear, quickMonth, i);
+          const isToday =
+            i === today.getDate() &&
+            quickMonth === today.getMonth() &&
+            quickYear === today.getFullYear();
+
+          let classes = "calendar-date-picker-day";
+          if (isToday) classes += " today";
+
+          html += `<div class="${classes}" data-date="${date.toISOString()}">${i}</div>`;
+        }
+
+        const totalCells = 42;
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+
+        for (let i = 1; i <= remainingCells; i++) {
+          html += `<div class="calendar-date-picker-day other-month">${i}</div>`;
+        }
+
+        html += "</div>";
+        container.innerHTML = html;
+
+        container
+          .querySelectorAll(".calendar-date-picker-day[data-date]")
+          .forEach((day) => {
+            day.addEventListener("click", function () {
+              const date = new Date(this.getAttribute("data-date"));
+
+              currentYear = date.getFullYear();
+              currentMonth = date.getMonth();
+              selectedDate = date;
+
+              updateCalendar();
+              selectDate(date.getDate());
+
+              document
+                .getElementById("quickDatePickerModal")
+                .classList.remove("active");
+            });
+          });
+
+        document
+          .getElementById("quickDatePrevMonth")
+          .addEventListener("click", function () {
+            currentMonth--;
+            if (currentMonth < 0) {
+              currentMonth = 11;
+              currentYear--;
+            }
+            updateCalendar();
+            updateQuickDateCalendar();
+          });
+
+        document
+          .getElementById("quickDateNextMonth")
+          .addEventListener("click", function () {
+            currentMonth++;
+            if (currentMonth > 11) {
+              currentMonth = 0;
+              currentYear++;
+            }
+            updateCalendar();
+            updateQuickDateCalendar();
+          });
+      }
+
+      document
+        .getElementById("dateSearchInput")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+
+          const today = new Date();
+          let foundDate = null;
+
+          for (let monthOffset = 0; monthOffset < 3; monthOffset++) {
+            const month = (today.getMonth() + monthOffset) % 12;
+            const year =
+              today.getFullYear() +
+              Math.floor((today.getMonth() + monthOffset) / 12);
+
+            if (monthNames[month].toLowerCase().includes(searchTerm)) {
+              foundDate = new Date(year, month, 1);
+              break;
+            }
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+              if (day.toString().includes(searchTerm.replace(/\D/g, ""))) {
+                foundDate = new Date(year, month, day);
+                break;
+              }
+            }
+
+            if (foundDate) break;
+          }
+
+          if (foundDate) {
+            currentYear = foundDate.getFullYear();
+            currentMonth = foundDate.getMonth();
+            selectedDate = foundDate;
+
+            updateCalendar();
+            selectDate(foundDate.getDate());
+            document
+              .getElementById("quickDatePickerModal")
+              .classList.remove("active");
+          }
+        });
+
+      // ===== HOLIDAY MANAGEMENT FUNCTIONALITY =====
+
+      document
+        .getElementById("manageHolidayBtn")
+        .addEventListener("click", function () {
+          document.getElementById("holidayModal").classList.add("active");
+          updateHolidayList();
+        });
+
+      document
+        .getElementById("closeHolidayModal")
+        .addEventListener("click", function () {
+          document.getElementById("holidayModal").classList.remove("active");
+        });
+
+      document
+        .getElementById("holidayModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            this.classList.remove("active");
+          }
+        });
+
+      document
+        .getElementById("addHolidayBtn")
+        .addEventListener("click", function () {
+          const name = document.getElementById("holidayNameInput").value.trim();
+          const dateStr = document.getElementById("holidayDateInput").value;
+
+          if (!name || !dateStr) {
+            showCalendarNotification(
+              "Please enter holiday name and date",
+              "error",
+            );
+            return;
+          }
+
+          const holidays = getHolidays();
+          const holidayDate = new Date(dateStr);
+
+          const existingHoliday = holidays.find((h) => {
+            const hDate = new Date(h.date);
+            return (
+              hDate.toISOString().split("T")[0] ===
+              holidayDate.toISOString().split("T")[0]
+            );
+          });
+
+          if (existingHoliday) {
+            showCalendarNotification(
+              "Holiday already exists for this date",
+              "error",
+            );
+            return;
+          }
+
+          holidays.push({
+            id: Date.now(),
+            name: name,
+            date: holidayDate.toISOString(),
+          });
+
+          saveHolidays(holidays);
+          updateHolidayList();
+          updateCalendar();
+
+          document.getElementById("holidayNameInput").value = "";
+          document.getElementById("holidayDateInput").value = "";
+
+          showCalendarNotification("Holiday added!", "success");
+        });
+
+      function updateHolidayList() {
+        const holidayList = document.getElementById("holidayList");
+        const holidays = getHolidays();
+
+        if (holidays.length === 0) {
+          holidayList.innerHTML =
+            '<div style="text-align: center; color: var(--gray); padding: 20px;">No holidays added yet</div>';
+          return;
+        }
+
+        holidayList.innerHTML = "";
+        holidays.forEach((holiday) => {
+          const holidayDate = new Date(holiday.date);
+          const item = document.createElement("div");
+          item.className = "holiday-item";
+          item.innerHTML = `
+      <span>${holiday.name} (${holidayDate.toLocaleDateString()})</span>
+      <button onclick="deleteHoliday(${holiday.id})">Delete</button>
+    `;
+          holidayList.appendChild(item);
+        });
+      }
+
+      window.deleteHoliday = function (holidayId) {
+        if (confirm("Are you sure you want to delete this holiday?")) {
+          const holidays = getHolidays();
+          const updatedHolidays = holidays.filter((h) => h.id !== holidayId);
+          saveHolidays(updatedHolidays);
+          updateHolidayList();
+          updateCalendar();
+          showCalendarNotification("Holiday deleted", "success");
+        }
+      };
+
+      // Navigation event listeners
+      document.getElementById("prev-month").addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        updateCalendar();
+      });
+
+      document.getElementById("next-month").addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        updateCalendar();
+      });
+
+      // Initialize calendar
+      updateCalendar();
+
+      // Set initial selected date to today
+      selectDate(new Date().getDate());
+
+      // Check for date parameter in URL (from add page)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("date")) {
+        try {
+          const dateParam = urlParams.get("date");
+          const date = new Date(dateParam);
+          if (!isNaN(date.getTime())) {
+            currentYear = date.getFullYear();
+            currentMonth = date.getMonth();
+            selectedDate = date;
+            updateCalendar();
+            selectDate(date.getDate());
+          }
+        } catch (e) {
+          console.error("Error parsing date parameter:", e);
+        }
+      }
+
+      // Offline support
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("Service Worker registered:", reg.scope))
+            .catch((err) =>
+              console.log("Service Worker registration failed:", err),
+            );
+        });
+      }
+    </script>
+    <script src="js/language.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/touch.js"></script>
+  </body>
+</html>

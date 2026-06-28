@@ -1,0 +1,1348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Statistics | WarpTask</title>
+    <link rel="manifest" href="/manifest.json" />
+
+    <link rel="shortcut icon" href="./imgs/warptaskbetaimg.png" />
+
+    <!-- APP -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="bottom_nav.css" />
+    <link rel="stylesheet" href="root.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--white);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: -12px;
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 8px;
+      }
+
+      .header p {
+        color: var(--gray);
+        font-size: 16px;
+      }
+
+      /* Stats Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+        margin-bottom: 7px;
+      }
+
+      .stat-card {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+        border-radius: 28px;
+        box-sizing: border-box;
+        padding: 14px;
+        box-sizing: border-box;
+        max-width: 210px;
+        width: 100%;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stat-card-box {
+        justify-content: space-between;
+        display: flex;
+      }
+
+      .stat-card-icon {
+        font-size: 21px;
+        background-color: var(--green);
+        height: fit-content;
+        box-sizing: border-box;
+        box-shadow: var(--element-shadow);
+        border-radius: 50%;
+        max-width: 35px;
+        width: 100%;
+        text-align: center;
+      }
+      /* Animation delays */
+      .header {
+        animation-delay: 0.1s;
+      }
+
+      .chart-section:nth-of-type(1) {
+        animation-delay: 0.3s;
+      }
+
+      .progress-section {
+        animation-delay: 0.4s;
+      }
+
+      .chart-section:nth-of-type(2) {
+        animation-delay: 0.5s;
+      }
+
+      .gamification-section {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Loading spinner */
+      .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--light-gray);
+        border-top-color: var(--blue);
+        border-radius: 50%;
+        animation: spin 10s linear infinite;
+        z-index: 1000;
+        opacity: 0;
+      }
+
+      @keyframes spin {
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      .stat-number {
+        font-size: 57px;
+        font-weight: 600;
+        margin-top: -20px;
+      }
+
+      .stat-label {
+        color: var(--gray);
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: -10px;
+      }
+
+      /* Charts */
+      .chart-section {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 35px;
+        padding: 24px;
+        margin-bottom: 7px;
+        box-shadow: var(--shadow);
+      }
+
+      .chart-container {
+        position: relative;
+        height: 160px;
+        width: 100%;
+      }
+
+      /* Simple Chart Fallback */
+      .simple-chart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        height: 150px;
+      }
+
+      .chart-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Progress Section */
+      .progress-section {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 14px 20px 6px 14px;
+        margin-bottom: 7px;
+        box-shadow: var(--shadow);
+      }
+
+      .progress-item {
+        margin-bottom: 12px;
+      }
+
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .progress-label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .progress-percentage {
+        font-size: 15px;
+        color: var(--white);
+        font-weight: 600;
+      }
+
+      .progress-bar {
+        height: 10px;
+        background: rgb(40, 40, 40, 0.607);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        transition: 1s all cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Category Stats */
+      .category-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .category-stat {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 26px;
+        box-shadow: var(--shadow);
+      }
+
+      .category-icon {
+        font-size: 26px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+      }
+
+      .category-info {
+        flex: 1;
+      }
+
+      .category-name {
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .category-count {
+        font-size: 13px;
+        color: var(--gray);
+      }
+
+      /* Gamification Section */
+      .gamification-section {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        margin-bottom: 7px;
+      }
+
+      .level-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--white);
+      }
+
+      .level-badge {
+        color: var(--white);
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .level-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .level-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--white);
+        margin: -20px 0 0 0;
+        min-width: 30px;
+      }
+
+      .level-bar-container {
+        flex: 1;
+        position: relative;
+      }
+
+      .level-bar-background {
+        height: 12px;
+        background: rgba(40, 40, 40, 0.607);
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 25px;
+      }
+
+      .level-bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        width: 0%;
+        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .level-bar-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--blue);
+      }
+
+      .level-milestones {
+        position: relative;
+        height: 20px;
+      }
+
+      .milestone {
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: var(--gray);
+        font-weight: 500;
+      }
+
+      .progress-details {
+        display: flex;
+        gap: 10px;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      .xp-info,
+      .tasks-to-next {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11.9px;
+      }
+
+      .xp-info {
+        background: rgba(255, 149, 0, 0.1);
+        padding: 3px 15px;
+        border-radius: 19px;
+        border: 1px solid rgba(255, 149, 0, 0.2);
+      }
+
+      .tasks-to-next {
+        background: rgba(0, 113, 227, 0.1);
+        padding: 3px 15px;
+        border-radius: 19px;
+        border: 1px solid rgba(0, 113, 227, 0.2);
+      }
+
+      .achievements-preview {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        margin-bottom: 7px;
+      }
+
+      .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+      }
+
+      .achievement-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 13px;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        gap: -10px;
+        border: 0.5px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        margin: 2px;
+      }
+
+      .achievement-card.achieved {
+        background: rgba(66, 255, 113, 0.1);
+        border-color: var(--green);
+        max-width: 180px;
+        width: 100%;
+        max-height: 100px;
+
+        border-radius: 26px;
+      }
+
+      .achievement-card.locked {
+        background: rgba(24, 24, 26, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 26px;
+        box-shadow: var(--shadow);
+        opacity: 0.67;
+        max-width: 160px;
+        width: 100%;
+        max-height: 100px;
+      }
+
+      .section-subtitle {
+        margin-bottom: 12px;
+        font-size: 20px;
+      }
+
+      .achievement-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .achievement-info {
+        flex: 1;
+      }
+
+      .achievement-name {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .achievement-desc {
+        font-size: 10px;
+        color: var(--gray);
+      }
+
+      .footer {
+        margin-top: 60px;
+      }
+
+      @keyframes checkBounce {
+        /* idle 10s */
+        0%,
+        62.5% {
+          transform: scale(1) rotate(0deg);
+        }
+
+        /* animatsiya boshlanishi (bounce + rotate) */
+        70% {
+          transform: scale(1.2) rotate(-10deg);
+        }
+        75% {
+          transform: scale(0.9) rotate(10deg);
+        }
+        80% {
+          transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* qaytadi normal holatga */
+        85%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+      }
+
+      @keyframes warpShake {
+        /* 0° da 10s turadi (idle) */
+        0%,
+        62.5% {
+          transform: rotate(0deg);
+        }
+
+        /* shake boshlanishi (55° ga chiqadi) */
+        70% {
+          transform: rotate(-5deg);
+        }
+        75% {
+          transform: rotate(5deg);
+        }
+        80% {
+          transform: rotate(-3deg);
+        }
+        85% {
+          transform: rotate(3deg);
+        }
+
+        /* shake tugadi, 0° ga smooth qaytadi */
+        90%,
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      /* Level up animation */
+      @keyframes levelUp {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .level-up-animation {
+        animation: levelUp 0.5s ease-in-out;
+      }
+
+      @keyframes achievementUnlock {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .achievement-card.achieved {
+        animation: achievementUnlock 0.6s ease-out;
+      }
+
+      @keyframes xpPulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .xp-gain {
+        animation: xpPulse 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="progress-section">
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label" data-i18n="completionProgress"
+              >Completion Progress</span
+            >
+            <span class="progress-percentage" id="completionProgress">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              id="completionBar"
+              style="width: 0%; background: var(--purple)"
+            ></div>
+          </div>
+        </div>
+        <div class="progress-item" style="display: none">
+          <div class="progress-header">
+            <span class="progress-label" data-i18n="productivityScore"
+              >Productivity Score</span
+            >
+            <span class="progress-percentage" id="productivityScore">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              id="productivityBar"
+              style="width: 0%; background: var(--white)"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card" style="display: none">
+          <div class="stat-number" id="totalTasks">0</div>
+          <div class="stat-label" data-i18n="totalTasks">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-box">
+            <div class="stat-number" id="completedTasks">0</div>
+            <div class="stat-card-icon"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="stat-label" data-i18n="completed">Completed</div>
+        </div>
+        <div class="stat-card" style="display: none">
+          <div class="stat-number" id="completionRate">0%</div>
+          <div class="stat-label" data-i18n="completionRate">
+            Completion Rate
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-box">
+            <div class="stat-number" id="pendingTasks">0</div>
+            <div class="stat-card-icon" style="background: var(--orange)">
+              <i class="fa-solid fa-inbox"></i>
+            </div>
+          </div>
+          <div class="stat-label" data-i18n="pending">Pending</div>
+        </div>
+      </div>
+
+      <!-- Completion Chart -->
+      <div class="chart-section">
+        <div class="chart-container">
+          <canvas id="taskChart"></canvas>
+          <!-- Fallback simple chart -->
+          <div class="simple-chart" id="simpleChart" style="display: none">
+            <div class="chart-item">
+              <div
+                class="chart-circle"
+                style="
+                  background: var(--green);
+                  animation: checkBounce 20s cubic-bezier(0.22, 1, 0.36, 1)
+                    infinite;
+                "
+                id="completedCircle"
+              >
+                0
+              </div>
+              <div class="chart-label" data-i18n="completed">Completed</div>
+            </div>
+            <div class="chart-item">
+              <div
+                class="chart-circle"
+                style="
+                  background: var(--orange);
+                  animation: warpShake 20s cubic-bezier(0.22, 1, 0.36, 1)
+                    infinite;
+                "
+                id="pendingCircle"
+              >
+                0
+              </div>
+              <div class="chart-label" data-i18n="pending">Pending</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Section -->
+
+      <!-- Gamification Section -->
+      <div class="gamification-section">
+        <div class="level-header">
+          <h3 class="section-title" data-i18n="productivityLevel">
+            Productivity Level
+          </h3>
+          <div class="level-badge" id="currentLevel">Beginner</div>
+        </div>
+
+        <div class="level-progress">
+          <div class="level-info" style="display: none">
+            <span class="level-number" id="levelNumber">1</span>
+            <div class="level-bar-container">
+              <div class="level-bar-background">
+                <div class="level-bar-fill" id="levelBarFill"></div>
+              </div>
+            </div>
+            <span class="level-number">5</span>
+          </div>
+
+          <div class="progress-details">
+            <div class="xp-info">
+              <i class="fas fa-bolt" style="color: #ff9500"></i>
+              <span
+                >XP: <strong id="currentXP">0</strong>/<span id="maxXP"
+                  >70</span
+                ></span
+              >
+            </div>
+            <div class="tasks-to-next">
+              <i class="fas fa-tasks" style="color: var(--blue)"></i>
+              <span id="nextLevelText">Complete 5 more tasks to level up!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="achievements-preview">
+        <h4 class="section-subtitle" data-i18n="achievements">Achievements</h4>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+
+      <!-- Category Stats -->
+      <div class="chart-section">
+        <div class="category-stats" id="categoryStats"></div>
+      </div>
+
+      <div class="footer"></div>
+
+      <!-- Bottom Navigation -->
+      <div class="nav">
+        <div class="bottom-nav">
+          <span class="nav-indicator"></span>
+
+          <a href="index.html" class="nav-item" data-link>
+            <i class="fa-solid fa-house-circle-check" id="nav-icon"></i>
+          </a>
+          <a href="calendar.html" class="nav-item" data-link>
+            <i class="fa-solid fa-calendar" id="nav-icon"></i>
+          </a>
+          <a href="add.html" class="nav-item" data-link>
+            <i class="fa-solid fa-plus" id="nav-icon"></i>
+          </a>
+
+          <a href="stats.html" class="nav-item active" data-link>
+            <i class="fa-solid fa-chart-pie" id="nav-icon"></i>
+          </a>
+          <a href="settings.html" class="nav-item" data-link>
+            <i class="fa-solid fa-bars" id="nav-icon"></i>
+          </a>
+        </div>
+        <div class="chat">
+          <a href="xgempage.html" style="color: var(--ios-white)">
+            <i class="fas fa-comments" id="nav-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Level tizimi konfiguratsiyasi
+      const LEVEL_CONFIG = {
+        levels: [
+          { level: 1, name: "Beginner", xpRequired: 20, color: "#30D158" },
+          { level: 2, name: "Intermediate", xpRequired: 70, color: "#007AFF" },
+          { level: 3, name: "Advanced", xpRequired: 100, color: "#5856D6" },
+          { level: 4, name: "Expert", xpRequired: 170, color: "#FF9500" },
+          { level: 5, name: "Master", xpRequired: 250, color: "#FF2D55" },
+        ],
+
+        achievements: [
+          {
+            id: "first_task",
+            name: "First Step",
+            desc: "Complete your first task",
+            icon: "🎯",
+            xp: 10,
+            condition: (tasks) => tasks.filter((t) => t.completed).length >= 1,
+          },
+          {
+            id: "perfect_week",
+            name: "Perfect Week",
+            desc: "Complete tasks 7 days in a row",
+            icon: "📅",
+            xp: 50,
+            condition: (tasks) => calculateStreak(tasks) >= 7,
+          },
+          {
+            id: "task_master",
+            name: "Task Master",
+            desc: "Complete 50 tasks",
+            icon: "👑",
+            xp: 100,
+            condition: (tasks) => tasks.filter((t) => t.completed).length >= 50,
+          },
+          {
+            id: "flash",
+            name: "Flash",
+            desc: "Complete 10 tasks in one day",
+            icon: "⚡",
+            xp: 75,
+            condition: (tasks) => {
+              const today = new Date().toISOString().split("T")[0];
+              return (
+                tasks.filter(
+                  (t) => t.completed && t.completedAt?.includes(today),
+                ).length >= 10
+              );
+            },
+          },
+          {
+            id: "early_bird",
+            name: "Early Bird",
+            desc: "Complete 5 tasks before 8 AM",
+            icon: "🌅",
+            xp: 40,
+            condition: (tasks) => {
+              const earlyTasks = tasks.filter(
+                (t) => t.completed && t.completedAt,
+              );
+              return (
+                earlyTasks.filter((t) => new Date(t.completedAt).getHours() < 8)
+                  .length >= 5
+              );
+            },
+          },
+          {
+            id: "consistency",
+            name: "Consistency",
+            desc: "Complete tasks for 30 days",
+            icon: "📊",
+            xp: 150,
+            condition: (tasks) => {
+              const completedDates = [
+                ...new Set(
+                  tasks
+                    .filter((t) => t.completed && t.completedAt)
+                    .map((t) => t.completedAt.split("T")[0]),
+                ),
+              ];
+              return completedDates.length >= 30;
+            },
+          },
+        ],
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Load tasks from localStorage
+        const tasks = JSON.parse(localStorage.getItem("wzTasks")) || [];
+
+        // Calculate statistics
+        const totalTasks = tasks.length;
+        const completedTasks = tasks.filter((task) => task.completed).length;
+        const pendingTasks = totalTasks - completedTasks;
+        const completionRate =
+          totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+        // Update stats grid
+        document.getElementById("totalTasks").textContent = totalTasks;
+        document.getElementById("completedTasks").textContent = completedTasks;
+        document.getElementById("pendingTasks").textContent = pendingTasks;
+        document.getElementById("completionRate").textContent =
+          completionRate + "%";
+
+        // Update progress bars
+        document.getElementById("completionProgress").textContent =
+          completionRate + "%";
+        document.getElementById("completionBar").style.width =
+          completionRate + "%";
+
+        // Calculate productivity score (based on recent activity)
+        const productivityScore = calculateProductivityScore(tasks);
+        document.getElementById("productivityScore").textContent =
+          productivityScore + "%";
+        document.getElementById("productivityBar").style.width =
+          productivityScore + "%";
+
+        // Try to initialize chart, fallback to simple chart if fails
+        try {
+          initializeChart(completedTasks, pendingTasks);
+        } catch (error) {
+          console.error("Chart.js failed, using fallback:", error);
+          showSimpleChart(completedTasks, pendingTasks);
+        }
+
+        // Initialize category stats
+        initializeCategoryStats(tasks);
+
+        // Initialize gamification system
+        updateLevelUI(tasks);
+
+        // Check for level up
+        checkLevelUp(tasks);
+      });
+
+      const pageTranslations = {
+        en: {
+          statsTitle: "Track your productivity",
+          totalTasks: "Total Tasks",
+          completed: "Completed",
+          completionRate: "Completion Rate",
+          pending: "Pending",
+          completionProgress: "Completion Progress",
+          productivityScore: "Productivity Score",
+          categoryStats: "Category Statistics",
+          productivityLevel: "Productivity Level",
+          achievements: "Achievements",
+        },
+        ru: {
+          statsTitle: "Отслеживайте свою продуктивность",
+          totalTasks: "Всего задач",
+          completed: "Завершено",
+          completionRate: "Процент выполнения",
+          pending: "В ожидании",
+          completionProgress: "Прогресс выполнения",
+          productivityScore: "Оценка продуктивности",
+          categoryStats: "Статистика по категориям",
+          productivityLevel: "Уровень продуктивности",
+          achievements: "Достижения",
+        },
+        uz: {
+          statsTitle: "Ish unumdorligingizni kuzating",
+          totalTasks: "Jami vazifalar",
+          completed: "Tugallangan",
+          completionRate: "Tugallash darajasi",
+          pending: "Kutilmoqda",
+          completionProgress: "Tugallash jarayoni",
+          productivityScore: "Ish unumdorligi balli",
+          categoryStats: "Toifa statistikasi",
+          productivityLevel: "Ish unumdorligi darajasi",
+          achievements: "Yutuqlar",
+        },
+      };
+
+      function calculateProductivityScore(tasks) {
+        if (tasks.length === 0) return 0;
+
+        const lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+
+        const recentTasks = tasks.filter(
+          (task) => new Date(task.createdAt) > lastWeek,
+        );
+        const recentCompleted = recentTasks.filter(
+          (task) => task.completed,
+        ).length;
+
+        return recentTasks.length > 0
+          ? Math.round((recentCompleted / recentTasks.length) * 100)
+          : 0;
+      }
+
+      function initializeChart(completed, pending) {
+        const ctx = document.getElementById("taskChart").getContext("2d");
+
+        // Hide simple chart
+        document.getElementById("simpleChart").style.display = "none";
+
+        // Calculate percentage
+        const total = completed + pending;
+        const percentage =
+          total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                data: [completed, pending],
+                backgroundColor: ["#30D158", "#ff9500"],
+                borderWidth: 0,
+                borderColor: "transparent",
+                borderRadius: 12,
+                spacing: 4,
+                hoverOffset: 3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "70%",
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+          plugins: [
+            {
+              id: "centerText",
+              beforeDraw: function (chart) {
+                if (chart.config.type === "doughnut") {
+                  const { ctx, chartArea } = chart;
+
+                  if (!chartArea) return; // Chart area mavjudligini tekshirish
+
+                  // Get center coordinates
+                  const x =
+                    chartArea.left + (chartArea.right - chartArea.left) / 2;
+                  const y =
+                    chartArea.top + (chartArea.bottom - chartArea.top) / 2;
+
+                  // Save ctx
+                  ctx.save();
+
+                  // Draw percentage text
+                  ctx.font = 'bold 40px "Inter", sans-serif';
+                  ctx.fillStyle = "#fff";
+                  ctx.textAlign = "center";
+                  ctx.textBaseline = "middle";
+                  ctx.fillText(`${percentage}%`, x, y);
+
+                  // Restore ctx
+                  ctx.restore();
+                }
+              },
+            },
+          ],
+        });
+      }
+
+      function showSimpleChart(completed, pending) {
+        // Show simple chart
+        document.getElementById("simpleChart").style.display = "flex";
+        document.getElementById("taskChart").style.display = "none";
+
+        // Update simple chart values
+        document.getElementById("completedCircle").textContent = completed;
+        document.getElementById("pendingCircle").textContent = pending;
+      }
+
+      function initializeCategoryStats(tasks) {
+        const categoryStats = document.getElementById("categoryStats");
+        const categories = {
+          work: { name: "Work", emoji: "💼", count: 0, completed: 0 },
+          personal: { name: "Personal", emoji: "🧩", count: 0, completed: 0 },
+          shopping: { name: "Shopping", emoji: "🛍️", count: 0, completed: 0 },
+          housework: { name: "Housework", emoji: "🏠", count: 0, completed: 0 },
+          health: { name: "Health", emoji: "🫀", count: 0, completed: 0 },
+          break: { name: "Break", emoji: "🎮", count: 0, completed: 0 },
+          wash: { name: "Wash", emoji: "🛁", count: 0, completed: 0 },
+          bed: { name: "Bed", emoji: "🛏️", count: 0, completed: 0 },
+          food: { name: "Food", emoji: "🥪", count: 0, completed: 0 },
+          salah: { name: "Salah", emoji: "📿", count: 0, completed: 0 },
+          sport: { name: "Sport", emoji: "🏋️‍♂️", count: 0, completed: 0 },
+          study: { name: "Study", emoji: "📚", count: 0, completed: 0 },
+          hobby: { name: "Hobby", emoji: "🎨", count: 0, completed: 0 },
+        };
+
+        // Count tasks by category
+        tasks.forEach((task) => {
+          if (categories[task.category]) {
+            categories[task.category].count++;
+            if (task.completed) {
+              categories[task.category].completed++;
+            }
+          }
+        });
+
+        // Create category stat elements
+        categoryStats.innerHTML = "";
+        Object.values(categories).forEach((category) => {
+          if (category.count > 0) {
+            const completionRate =
+              category.count > 0
+                ? Math.round((category.completed / category.count) * 100)
+                : 0;
+
+            const categoryElement = document.createElement("div");
+            categoryElement.className = "category-stat";
+            categoryElement.innerHTML = `
+                              <div class="category-icon">${category.emoji}</div>
+                              <div class="category-info">
+                                  <div class="category-name">${category.name}</div>
+                                  <div class="category-count">
+                                      ${category.completed}/${category.count} tasks (${completionRate}%)
+                                  </div>
+                              </div>
+                          `;
+            categoryStats.appendChild(categoryElement);
+          }
+        });
+
+        // If no categories have tasks, show message
+        if (categoryStats.children.length === 0) {
+          categoryStats.innerHTML = `
+                          <div style="text-align: center; color: var(--gray); padding: 20px;">
+                              No tasks yet. Add some tasks to see statistics!
+                          </div>
+                      `;
+        }
+      }
+
+      if (typeof Chart === "undefined") {
+        console.log("Chart.js not loaded, using fallback chart");
+        document.addEventListener("DOMContentLoaded", function () {
+          const tasks = JSON.parse(localStorage.getItem("wzTasks")) || [];
+          const completedTasks = tasks.filter((task) => task.completed).length;
+          const pendingTasks = tasks.length - completedTasks;
+          showSimpleChart(completedTasks, pendingTasks);
+        });
+      }
+
+      // ===== GAMIFICATION FUNCTIONS =====
+
+      // XP hisoblash
+      function calculateXP(tasks) {
+        let xp = 0;
+
+        // Har bir tugallangan vazifa uchun 5 XP
+        const completedTasks = tasks.filter((t) => t.completed);
+        xp += completedTasks.length * 5;
+
+        // Streak bonus
+        const streak = calculateStreak(tasks);
+        xp += streak * 2;
+
+        // Achievement bonuslarni qo'shish
+        const achieved = calculateAchievements(tasks);
+        achieved.forEach((ach) => {
+          xp += ach.xp;
+        });
+
+        return xp;
+      }
+
+      // Levelni hisoblash
+      function calculateLevel(xp) {
+        const config = LEVEL_CONFIG.levels;
+
+        for (let i = config.length - 1; i >= 0; i--) {
+          if (xp >= config[i].xpRequired) {
+            const currentLevel = config[i];
+            const nextLevel = config[i + 1];
+
+            return {
+              level: currentLevel.level,
+              name: currentLevel.name,
+              color: currentLevel.color,
+              currentXP: xp,
+              xpRequired: currentLevel.xpRequired,
+              nextLevelXP: nextLevel
+                ? nextLevel.xpRequired
+                : currentLevel.xpRequired,
+              progress: nextLevel
+                ? ((xp - currentLevel.xpRequired) /
+                    (nextLevel.xpRequired - currentLevel.xpRequired)) *
+                  100
+                : 100,
+            };
+          }
+        }
+
+        return {
+          level: 1,
+          name: "Beginner",
+          color: "#30D158",
+          currentXP: xp,
+          xpRequired: 0,
+          nextLevelXP: 100,
+          progress: (xp / 100) * 100,
+        };
+      }
+
+      // Achievementlarni hisoblash
+      function calculateAchievements(tasks) {
+        return LEVEL_CONFIG.achievements.filter((ach) => ach.condition(tasks));
+      }
+
+      // Level UI yangilash
+      function updateLevelUI(tasks) {
+        const xp = calculateXP(tasks);
+        const levelData = calculateLevel(xp);
+
+        // Level ma'lumotlarini yangilash
+        const levelBadge = document.getElementById("currentLevel");
+        levelBadge.textContent = levelData.name;
+        levelBadge.style.background = `${levelData.color}`;
+
+        document.getElementById("levelNumber").textContent = levelData.level;
+        document.getElementById("currentXP").textContent = xp;
+        document.getElementById("maxXP").textContent = levelData.nextLevelXP;
+
+        // Progress bar
+        const progressBar = document.getElementById("levelBarFill");
+        progressBar.style.width = `${levelData.progress}%`;
+
+        // Keyingi level uchun vazifalar soni
+        const tasksToNext = Math.ceil((levelData.nextLevelXP - xp) / 5);
+        document.getElementById("nextLevelText").textContent =
+          levelData.level === 5
+            ? "You've reached maximum level!"
+            : `Complete ${tasksToNext} more tasks to level up!`;
+
+        // Achievementlarni yangilash
+        updateAchievementsUI(tasks);
+      }
+
+      // Achievement UI yangilash
+      function updateAchievementsUI(tasks) {
+        const achievementsGrid = document.getElementById("achievementsGrid");
+        const achieved = calculateAchievements(tasks);
+
+        achievementsGrid.innerHTML = LEVEL_CONFIG.achievements
+          .map((ach) => {
+            const isAchieved = achieved.some((a) => a.id === ach.id);
+
+            return `
+            <div class="achievement-card ${isAchieved ? "achieved" : "locked"}">
+              <div class="achievement-icon">${ach.icon}</div>
+              <div class="achievement-info">
+                <div class="achievement-name">${ach.name}</div>
+                <div class="achievement-desc">${ach.desc}</div>
+              </div>
+              ${isAchieved ? '<i class="fas fa-check" style="color: var(--ios-green);"></i>' : ""}
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      // Rangni ochiqroq qilish funksiyasi
+      function lightenColor(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = ((num >> 8) & 0x00ff) + amt;
+        const B = (num & 0x0000ff) + amt;
+
+        return `#${(
+          0x1000000 +
+          (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+          (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+          (B < 255 ? (B < 1 ? 0 : B) : 255)
+        )
+          .toString(16)
+          .slice(1)}`;
+      }
+
+      // Streak hisoblash
+      function calculateStreak(tasks) {
+        const completedDates = [
+          ...new Set(
+            tasks
+              .filter((task) => task.completed && task.completedAt)
+              .map((task) => task.completedAt?.split("T")[0]),
+          ),
+        ]
+          .filter((date) => date)
+          .sort()
+          .reverse();
+
+        if (completedDates.length === 0) return 0;
+
+        let streak = 1;
+        let currentDate = new Date(completedDates[0]);
+
+        for (let i = 1; i < completedDates.length; i++) {
+          const prevDate = new Date(completedDates[i]);
+          const diffTime = currentDate - prevDate;
+          const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+          if (diffDays === 1) {
+            streak++;
+            currentDate = prevDate;
+          } else {
+            break;
+          }
+        }
+
+        return streak;
+      }
+
+      // Level o'zgarganda bildirishnoma
+      let previousLevel = 1;
+
+      function checkLevelUp(tasks) {
+        const xp = calculateXP(tasks);
+        const currentLevel = calculateLevel(xp).level;
+
+        if (currentLevel > previousLevel) {
+          // Level up animatsiya
+          document
+            .getElementById("currentLevel")
+            .classList.add("level-up-animation");
+
+          // XP animatsiya
+          document.getElementById("currentXP").classList.add("xp-gain");
+
+          // Animationni olib tashlash
+          setTimeout(() => {
+            document
+              .getElementById("currentLevel")
+              .classList.remove("level-up-animation");
+            document.getElementById("currentXP").classList.remove("xp-gain");
+          }, 1000);
+        }
+
+        previousLevel = currentLevel;
+      }
+
+      // Offline support
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("Service Worker registered:", reg.scope))
+            .catch((err) =>
+              console.log("Service Worker registration failed:", err),
+            );
+        });
+      }
+
+      // stats.html faylining oxiriga qo'shing
+      console.log("Chart.js loaded:", typeof Chart !== "undefined");
+    </script>
+    <script src="js/language.js"></script>
+    <script src="js/global.js"></script>
+  </body>
+</html>

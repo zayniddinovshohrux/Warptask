@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Login | WarpTask</title>
+    <link rel="stylesheet" href="root.css">
+        <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS STYLES - TO'LIQ SAQLANADI */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 50px;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        /* Login Form */
+        .login-form {
+            background: rgba(28, 28, 30, 0.7);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 25px;
+            margin-bottom: 7px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray);
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px 50px 16px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            color: var(--white);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-field::placeholder {
+            color: var(--light-gray);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .input-icon:hover {
+            color:var(--white);
+        }
+
+        /* Login Button */
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 22px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-button:hover:not(:disabled) {
+            background: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .login-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(220, 39, 29, 0.1);
+            border: 1px solid rgba(220, 39, 29, 0.3);
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: var(--red);
+            font-size: 14px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Sign Up Link */
+        .signup-link {
+            text-align: center;
+            color: var(--gray);
+            font-size: 16px;
+            padding: 20px;
+        }
+
+        .signup-link a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .signup-link a:hover {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .login-button.loading .spinner {
+            display: block;
+        }
+
+        .login-button.loading .button-text {
+            display: none;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(28, 28, 30, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .login-form {
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue to WarpTask</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <div class="login-form">
+            <div class="form-group">
+                <label class="input-label">Email or Username</label>
+                <div class="input-container">
+                    <input 
+                        type="text" 
+                        id="identifier" 
+                        class="input-field" 
+                        placeholder="Enter email or username"
+                        autocomplete="username"
+                    >
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label">Password</label>
+                <div class="input-container">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input-field" 
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                    >
+                    <div class="input-icon" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button id="loginButton" class="login-button" disabled>
+                <span class="button-text">Sign In</span>
+                <div class="spinner"></div>
+            </button>
+        </div>
+
+        <div class="signup-link">
+            Don't have an account? <a href="signup.html">Sign up</a>
+        </div>
+    </div>
+
+    <!-- TELEFON UCHUN MAXSUS AUTH.JS VERSIYASI -->
+    <script>
+        console.log("📱 Telefon uchun Login sahifasi");
+        
+        // Avval localStorage'ni TEKSHIRAMIZ va TOZALAYMIZ
+        function initializeAuthForPhone() {
+            console.log("🔄 Telefon auth tayyorlanmoqda...");
+            
+            // localStorage mavjudligini tekshirish
+            if (typeof localStorage === 'undefined') {
+                console.error("❌ localStorage mavjud emas!");
+                // Fake localStorage yaratamiz
+                window.localStorage = {
+                    _data: {},
+                    setItem: function(key, value) {
+                        this._data[key] = value;
+                        console.log("💾 SET:", key, value);
+                    },
+                    getItem: function(key) {
+                        const val = this._data[key];
+                        console.log("📖 GET:", key, val);
+                        return val;
+                    },
+                    removeItem: function(key) {
+                        console.log("🗑️ REMOVE:", key);
+                        delete this._data[key];
+                    },
+                    clear: function() {
+                        console.log("🧹 CLEAR localStorage");
+                        this._data = {};
+                    }
+                };
+                console.log("✅ Fake localStorage yaratildi");
+            }
+            
+            // ESKI AUTH MA'LUMOTLARINI TOZALASH
+            try {
+                console.log("🧹 Eski auth ma'lumotlari tozalanmoqda...");
+                localStorage.removeItem('wzCurrentUser');
+                localStorage.removeItem('wzIsLoggedIn');
+                console.log("✅ Auth tozalandi!");
+            } catch (error) {
+                console.log("⚠️ Auth tozalashda xatolik:", error);
+            }
+            
+            // TELEFON UCHUN AUTH OBYEKTI
+            window.auth = {
+                // Login funksiyasi
+                login: function(identifier, password) {
+                    return new Promise((resolve, reject) => {
+                        console.log("🔐 Login urinmoqda:", identifier);
+                        
+                        // Loading simulation
+                        setTimeout(() => {
+                            try {
+                                // Foydalanuvchilarni olish
+                                const allUsers = JSON.parse(localStorage.getItem('wzUsers') || '[]');
+                                console.log("👥 Foydalanuvchilar soni:", allUsers.length);
+                                
+                                // Foydalanuvchini topish
+                                const user = allUsers.find(u => 
+                                    u.email === identifier || u.username === identifier
+                                );
+                                
+                                if (!user) {
+                                    console.log("❌ Foydalanuvchi topilmadi");
+                                    reject(new Error('User not found. Please check your credentials.'));
+                                    return;
+                                }
+                                
+                                // Parolni tekshirish
+                                if (user.password !== password) {
+                                    console.log("❌ Noto'g'ri parol");
+                                    reject(new Error('Incorrect password. Please try again.'));
+                                    return;
+                                }
+                                
+                                console.log("✅ Login muvaffaqiyatli:", user.username);
+                                
+                                // User'ni saqlash
+                                localStorage.setItem('wzCurrentUser', JSON.stringify(user));
+                                localStorage.setItem('wzIsLoggedIn', 'true');
+                                
+                                resolve(user);
+                                
+                            } catch (error) {
+                                console.error("💥 Login xatosi:", error);
+                                reject(new Error('Login failed. Please try again.'));
+                            }
+                        }, 800);
+                    });
+                },
+                
+                // Foydalanuvchi kirganligini tekshirish
+                isLoggedIn: function() {
+                    // TELEFON UCHUN: Har doim false qaytaramiz, login sahifasida qolish uchun
+                    console.log("🔍 isLoggedIn tekshirilmoqda... (telefon uchun false)");
+                    return false;
+                },
+                
+                // Validation funksiyalari (signup.html uchun kerak bo'lsa)
+                validateEmail: function(email) {
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                },
+                
+                validateUsername: function(username) {
+                    return /^[a-zA-Z0-9_]{3,20}$/.test(username);
+                }
+            };
+            
+            console.log("✅ Telefon auth sistema tayyor!");
+        }
+        
+        // Sahifa yuklanganda
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("📄 Login sahifasi yuklandi");
+            initializeAuthForPhone();
+            startLoginApp();
+        });
+    </script>
+    
+    <!-- ASOSIY LOGIN APP -->
+    <script>
+        function startLoginApp() {
+            console.log("🚀 Login app ishga tushmoqda...");
+            
+            // DOM Elementlari
+            const identifierInput = document.getElementById('identifier');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('loginButton');
+            const togglePassword = document.getElementById('togglePassword');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // 1. Password ko'rsatish/yashirish
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.type === 'password' ? 'text' : 'password';
+                passwordInput.type = type;
+                this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            });
+            
+            // 2. Input'larni tekshirish
+            function validateInputs() {
+                const identifier = identifierInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                // Button'ni yoqish/o'chirish
+                loginButton.disabled = !(identifier && password.length >= 1);
+                
+                console.log("📝 Input tekshirildi:", { identifier: !!identifier, password: password.length });
+            }
+            
+            // 3. Xatolikni ko'rsatish
+            function showError(message) {
+                console.error("❌ Xatolik:", message);
+                errorText.textContent = message;
+                errorMessage.classList.add('show');
+                loginButton.classList.remove('shake');
+                
+                setTimeout(() => {
+                    loginButton.classList.add('shake');
+                }, 10);
+            }
+            
+            // 4. Xatolikni yashirish
+            function hideError() {
+                errorMessage.classList.remove('show');
+                loginButton.classList.remove('shake');
+            }
+            
+            // 5. ASOSIY LOGIN FUNKSIYASI
+            async function handleLogin() {
+                const identifier = identifierInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                console.log("🔐 Login bosildi:", { identifier, passwordLength: password.length });
+                
+                if (!identifier || !password) {
+                    showError('Please fill in all fields');
+                    return;
+                }
+                
+                // Loading holati
+                loginButton.disabled = true;
+                loginButton.classList.add('loading');
+                hideError();
+                
+                try {
+                    console.log("⏳ Login jarayoni...");
+                    const user = await auth.login(identifier, password);
+                    
+                    console.log("✅ Login muvaffaqiyatli!", user.username);
+                    
+                    // Muvaffaqiyat holati
+                    loginButton.innerHTML = '<i class="fas fa-check"></i> Success!';
+                    
+                    // Index sahifasiga o'tish
+                    setTimeout(() => {
+                        console.log("🔄 Index sahifasiga o'tilmoqda...");
+                        window.location.href = 'index.html';
+                    }, 800);
+                    
+                } catch (error) {
+                    console.error("💥 Login xatosi:", error);
+                    
+                    // Xatolikni ko'rsatish
+                    showError(error.message || 'Login failed. Please try again.');
+                    
+                    // Button'ni tiklash
+                    loginButton.disabled = false;
+                    loginButton.classList.remove('loading');
+                    loginButton.querySelector('.button-text').textContent = 'Sign In';
+                }
+            }
+            
+            // 6. EVENT LISTENER'LAR
+            identifierInput.addEventListener('input', validateInputs);
+            passwordInput.addEventListener('input', validateInputs);
+            
+            loginButton.addEventListener('click', handleLogin);
+            
+            // Enter tugmasi bilan login
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !loginButton.disabled && !loginButton.classList.contains('loading')) {
+                    handleLogin();
+                }
+            });
+            
+            // 7. Dastlabki validatsiya
+            validateInputs();
+            
+            // 8. TELEFON UCHUN QO'SHIMCHA: URL PARAMETERS
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('logout')) {
+                console.log("🚪 Logout param bor, localStorage tozalanmoqda...");
+                localStorage.removeItem('wzCurrentUser');
+                localStorage.removeItem('wzIsLoggedIn');
+            }
+            
+            console.log("✅ Login app to'liq yuklandi!");
+        }
+        
+        // 9. TELEFON UCHUN QO'SHIMCHA FUNKSIYALAR
+        function setupForMobile() {
+            // Input'larga focus bo'lganda sahifa pastga surilmasin
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                    }, 300);
+                });
+            });
+            
+            // Back button bosilganda
+            document.querySelector('.back-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("🔙 Back button bosildi");
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // Mobile setup
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            console.log("📱 Mobile device aniqa");
+            document.addEventListener('DOMContentLoaded', setupForMobile);
+        }
+    </script>
+</body>
+</html>

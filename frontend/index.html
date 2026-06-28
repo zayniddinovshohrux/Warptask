@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>WarpTask</title>
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- WARP TASK LOGO -->
+    <link rel="shortcut icon" href="./imgs/warptaskbetaimg.png" />
+
+    <!-- CDNSJ -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"25
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="root.css" />
+    <link rel="stylesheet" href="bottom_nav.css" />
+  </head>
+  <body>
+    <div class="container">
+        <div class="top-nav">
+          <div class="home-avatar-bg">
+            <img
+          id="homeAvatar"
+          onclick="goToSettings()"
+          
+          src=""
+          />
+          </div>
+      <div class="home-user" ">
+      
+        <span id="homeName"></span>
+      
+        <div class="just-icons">
+          <i class="fa-solid fa-bullseye" id="focusModeBtn"></i>
+          <div class="just-icon">
+            <a href="warptask.html"
+            ><img
+              src="imgs/warptask_icon_img-removebg-preview.png"
+              alt=""
+              class="warptask"
+          /></a>
+          </div>
+        </div>
+      </div>
+        </div>
+
+      <!-- Stats -->
+      <div class="stats-container">
+        <div class="stat-card completed">
+          <div class="stat-card-box">
+            <h3 id="completed-count">0</h3>
+            <div
+              class="stat-card-icon"
+              style="
+                animation: checkBounce 20s cubic-bezier(0.22, 1, 0.36, 1)
+                  infinite;
+              "
+            >
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+          <p data-i18n="completed">Completed</p>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-card-box">
+            <h3 id="pending-count">0</h3>
+            <div
+              class="stat-card-icon"
+              style="
+                background-color: var(--orange);
+                animation: warpShake 20s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+              "
+            >
+              <i class="fa-solid fa-inbox"></i>
+            </div>
+          </div>
+          <p data-i18n="pending">Pending</p>
+        </div>
+      </div>
+
+      <!-- Focus Mode Button -->
+      <!-- <button class="focus-mode-btn" id="focusModeBtn">
+        <span data-i18n="focusModeBtn">Focus</span>
+      </button> -->
+
+     <button class="warp-mode-btn" id="warpNowBtn">
+        <svg
+          height="24"
+          width="24"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path
+            d="M5 13c0-5.088 2.903-9.436 7-11.182C16.097 3.564 19 7.912 19 13c0 .823-.076 1.626-.22 2.403l1.94 1.832a.5.5 0 0 1 .095.603l-2.495 4.575a.5.5 0 0 1-.793.114l-2.234-2.234a1 1 0 0 0-.707-.293H9.414a1 1 0 0 0-.707.293l-2.234 2.234a.5.5 0 0 1-.793-.114l-2.495-4.575a.5.5 0 0 1 .095-.603l1.94-1.832C5.077 14.626 5 13.823 5 13zm1.476 6.696l.817-.817A3 3 0 0 1 9.414 18h5.172a3 3 0 0 1 2.121.879l.817.817.982-1.8-1.1-1.04a2 2 0 0 1-.593-1.82c.124-.664.187-1.345.187-2.036 0-3.87-1.995-7.3-5-8.96C8.995 5.7 7 9.13 7 13c0 .691.063 1.372.187 2.037a2 2 0 0 1-.593 1.82l-1.1 1.039.982 1.8zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        Warp Now 
+      </button>
+      <!-- Add Task -->
+      <div class="add-task-container">
+        <div class="add-task">
+          <input
+            type="text"
+            class="task-input"
+            placeholder="Add a new task..."
+            id="taskInput"
+            data-i18n="taskPlaceholder"
+          />
+          <button class="add-btn" id="addTaskBtn">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="voice-btn" id="voiceBtn" style="display: none">
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
+        <div class="category-selection" id="categorySelection">
+          <div
+            class="category-option active"
+            data-category="personal"
+            data-i18n="personal"
+          >
+            <span class="category-emoji">🧩</span> Personal
+          </div>
+          <div class="category-option" data-category="work" data-i18n="work">
+            <span class="category-emoji">💼</span> Work
+          </div>
+          <div class="category-option" data-category="food" data-i18n="food">
+            <span class="category-emoji">🥪</span> Food
+          </div>
+          <div class="category-option" data-category="sport" data-i18n="sport">
+            <span class="category-emoji">🏋️‍♂️</span> Sport
+          </div>
+
+          <div class="category-option" data-category="salah" data-i18n="salah">
+            <span class="category-emoji">📿</span> Salah
+          </div>
+          <div class="category-option" data-category="bed" data-i18n="bed">
+            <span class="category-emoji">🛏️</span> Bed
+          </div>
+          <div
+            class="category-option"
+            data-category="housework"
+            data-i18n="housework"
+          >
+            <span class="category-emoji">🏠</span> Housework
+          </div>
+          <div
+            class="category-option"
+            data-category="shopping"
+            data-i18n="shopping"
+          >
+            <span class="category-emoji">🛍️</span> Shopping
+          </div>
+          <div class="category-option" data-category="break" data-i18n="break">
+            <span class="category-emoji">🎮</span> Break
+          </div>
+          <div class="category-option" data-category="wash" data-i18n="wash">
+            <span class="category-emoji">🛁</span> Wash
+          </div>
+
+          <div
+            class="category-option"
+            data-category="health"
+            data-i18n="health"
+          >
+            <span class="category-emoji">🫀</span> Health
+          </div>
+          <div class="category-option" data-category="study" data-i18n="study">
+            <span class="category-emoji">📚</span> Study
+          </div>
+
+          <div class="category-option" data-category="hobby" data-i18n="hobby">
+            <span class="category-emoji">🎨</span> Hobby
+          </div>
+        </div>
+
+        <div
+          class="smart-suggestions"
+          id="smartSuggestions"
+          style="display: none"
+        >
+          <div class="suggestions-header">
+            <span class="suggestions-span">
+              <img src="imgs/warptask_icon_img-removebg-preview.png" alt="" style="width: 33px; transform: rotate(53deg); margin-top:5px;"><span data-i18n="ideas">AI Suggestions</span>
+            </span>
+            <button class="close-suggestions"><i class="fa-solid fa-xmark" style="font-size: 16px;"></i></button>
+          </div>
+          <div class="suggestions-list" id="suggestionsList"></div>
+        </div>
+      </div>
+
+     <div class="search-container" id="searchContainer">
+  <div class="search-wrapper">
+    <div class="search-icon-wrapper" id="searchIconWrapper">
+      <i class="fas fa-search search-icon" id="searchIcon"></i>
+    </div>
+    <input 
+      type="text" 
+      class="search-input" 
+      id="searchInput" 
+      placeholder="Search task..." 
+      data-i18n="searchPlaceholder"
+    />
+    <button class="search-clear-btn" id="searchClearBtn" style="display: none;">
+      <i class="fas fa-times-circle"></i>
+    </button>
+  </div>
+  
+  <!-- Search Results -->
+  <div class="search-results" id="searchResults" style="display: none;">
+    <div class="search-results-header">
+      <span class="search-results-count" id="searchResultsCount">0 tasks found</span>
+      <button class="search-results-close" id="searchResultsClose">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+    <div class="search-results-list" id="searchResultsList"></div>
+  </div>
+</div>
+     
+
+      <!-- Tasks Section -->
+      <div class="tasks-section">
+        <div class="section-header"></div>
+
+        <div class="task-list" id="taskList">
+          <!-- Tasks will be added here dynamically -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+              <i class="far fa-check-circle"></i>
+            </div>
+            <h3>No tasks yet</h3>
+            <p>Add your first task to get started!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task Detail Modal -->
+
+      <!-- Drag Preview Element -->
+      <div class="drag-preview" id="dragPreview" style="display: none"></div>
+
+      <button
+        class="clear-completed-btn"
+        id="clearCompletedBtn"
+        style="margin-bottom: 60px"
+      >
+      <span data-i18n="Clear">Clear</span>
+       
+      </button>
+
+      <!-- Focus Mode Overlay -->
+
+      <div id="notificationContainer" class="notification-container"></div>
+
+      <!-- Bottom Navigation -->
+      <div class="nav">
+        <div class="bottom-nav">
+          <span class="nav-indicator"></span>
+          <a href="index.html" class="nav-item active" data-link>
+            <i class="fa-solid fa-house-circle-check" id="nav-icon"></i>
+          </a>
+          <a href="calendar.html" class="nav-item" data-link>
+            <i class="fa-solid fa-calendar" id="nav-icon"></i>
+          </a>
+          <a href="add.html" class="nav-item" data-link>
+            <i class="fa-solid fa-plus" id="nav-icon"></i>
+          </a>
+
+          <a href="stats.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-chart-pie"></i>
+          </a>
+          <a href="settings.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-bars"></i>
+          </a>
+        </div>
+        <div class="chat">
+          <a href="xgempage.html" style="color: var(--white)">
+            <i class="fas fa-comments" id="nav-icon"></i>
+          </a>
+        </div>
+      </div>
+      <div class="task-detail-modal" id="taskDetailModal">
+        <div class="task-detail-content">
+          <div class="task-detail-header">
+            <button class="close-detail" id="closeDetailBtn">
+              <i class="fa-solid fa-angle-left"></i>
+            </button>
+            <div class="task-detail-title" id="detailTaskTitle">
+              <span id="detailCategoryEmoji">📝</span>
+              <span id="detailTaskText" data-i18n="dataDetails"
+                >Task Details</span
+              >
+            </div>
+          </div>
+
+          <div class="task-detail-body">
+            <div class="task-main-info">
+              <div class="task-text-large" id="detailFullText"></div>
+
+              <div class="task-meta-detail">
+                <div class="task-category-badge" id="detailCategoryBadge">
+                  <i class="fas fa-tag"></i>
+                  <span id="detailCategoryName" data-i18n="personal"
+                    >Personal</span
+                  >
+                </div>
+                <div class="task-time-badge">
+                  <i class="far fa-clock"></i>
+                  <span id="detailTaskTime" data-i18n="now">Now</span>
+                </div>
+                <div class="task-time-badge" id="detailStatusBadge">
+                  <i class="fas fa-circle"></i>
+                  <span data-i18n="pending">Pending</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sub-task Section -->
+            <div class="subtask-section">
+              <div class="section-title">
+                <span style="color: var(--white)" data-i18n="subtasks">Subtasks:</span>
+                <button class="add-subtask-btn" id="addSubtaskBtn">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+              <div class="subtask-input-container">
+                <input
+                  type="text"
+                  class="subtask-input-detail"
+                  id="subtaskInputDetail"
+                  placeholder="Add a subtask..."
+                />
+                <button class="save-subtask-btn" id="saveSubtaskBtn">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+              <div class="subtask-list-detail" id="subtaskListDetail">
+                <!-- Subtasks will be added here -->
+              </div>
+              <div
+                class="add-subtask-form"
+                id="addSubtaskForm"
+                style="display: none"
+              ></div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="notes-section">
+              <div class="section-title">
+                <span style="color: var(--white)" data-i18n="notes">Notes:</span>
+              </div>
+              <div class="notes-input-container">
+                <textarea
+                  class="notes-input"
+                  id="taskNotesInput"
+                  placeholder="Add notes for this task..."
+                ></textarea>
+              </div>
+              <div class="notes-actions">
+                <button class="save-notes-btn" id="saveNotesBtn">
+                  <i class="fas fa-save"></i>
+                  <span data-i18n="saveNotes">Save Notes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-detail-footer">
+            <button
+              class="task-action-btn complete-detail-btn"
+              id="completeDetailBtn"
+            >
+              <i class="fas fa-check-circle"></i>
+            </button>
+            <button
+              class="task-action-btn delete-detail-btn"
+              id="deleteDetailBtn"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/home.js"></script>
+    <script src="js/sw.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/task.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/touch.js"></script>
+    <script src="js/avatar.js"></script>
+    <script src="js/list.js"></script>
+    <script src="js/warp.js"></script>
+  </body>
+</html>

@@ -1,0 +1,3025 @@
+<!doctype html>
+<html lang="en" id="htmlLang">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Settings | WarpTask</title>
+    <link rel="manifest" href="/manifest.json" />
+     <link rel="shortcut icon" href="./imgs/warptaskbetaimg.png" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="root.css"/>
+    <link rel="stylesheet" href="bottom_nav.css"/>
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+
+      body {
+        background: var(--background);
+        color: var(--white);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: 100vh;
+        padding-bottom: 72px;
+      }
+
+      /* Header */
+      .header {
+
+        margin-top: -12px;
+      }
+
+      
+
+      .profile-header {
+        text-align: center;
+        margin: 0px 0 7px;
+       background: var(--glass-bg);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius:34px;
+        padding: 13px;
+        box-shadow: var(--shadow);
+
+      }
+
+      .profile-avatar-large {
+        width: 100px;
+        height: 100px;
+        background:var(--background);
+      box-shadow: var(--element-shadow);
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .profile-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .profile-title {
+        color: var(--gray);
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .profile-rating {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+
+      .profile-rating i {
+        color: var(--yellow);
+        font-size: 16px;
+      }
+
+      .profile-rating span {
+        color: var(--gray);
+        font-size: 13px;
+        margin-left: 6px;
+      }
+      
+
+      .settings-section {
+        background: var(--glass-bg);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius:34px;
+        padding: 0;
+        margin-bottom: 7px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .section-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: -12px;
+        color: var(--gray);
+        padding: 20px 20px 10px;
+        text-transform: uppercase;
+      }
+
+      .settings-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 15px;
+        cursor: pointer;
+        transition: var(--transition);
+        animation: settingItemSlide 0.3s ease;
+      }
+
+      .item-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .item-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        font-size: 17px;
+        text-align: center;
+        color: var(--white);
+        border-radius: 12px;
+        box-shadow: var(--element-shadow);
+      }
+
+      .item-text {
+        flex: 1;
+      }
+
+      .item-title {
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .item-description {
+        font-size: 13px;
+        color: var(--gray);
+      }
+
+      .item-value {
+        font-size: 15px;
+        color: var(--gray);
+        margin-right: 4px;
+      }
+
+      .item-arrow {
+        color: var(--light-gray);
+        font-size: 16px;
+        
+      }
+
+      /* Toggle Switch */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 51px;
+        height: 31px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--light-gray);
+        transition: var(--transition);
+        border-radius: 34px;
+        box-shadow: var(--element-shadow);
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 27px;
+        width: 27px;
+        left: 2px;
+        bottom: 2px;
+        background-color: var(--white);
+        border-radius: 22px;
+        transition: var(--transition);
+        box-shadow: var(--element-shadow);
+      }
+
+      input:checked + .toggle-slider {
+        background-color: var(--blue);
+        box-shadow: var(--element-shadow);
+        transition: var(--transition);
+      }
+
+      input:checked + .toggle-slider:before {
+        transform: translateX(19px);
+         transition: var(--transition);
+      }
+
+      /* Danger Zone */
+      .danger-zone {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .danger-zone::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 13, 0, 0.304),
+          transparent
+        );
+        animation: dangerShimmer 3s infinite;
+      }
+
+      .danger-item {
+        color: var(--red);
+      }
+
+      .danger-item .item-icon {
+        font-size: 17px;
+      }
+
+      /* Avatar Preview */
+      .avatar-preview {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 14px;
+        overflow: hidden;
+      }
+
+      .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Modal Styles */
+      .language-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 1px;
+      }
+
+      .modal-content {
+        backdrop-filter: blur(7px) saturate(120%);
+        background:var(--background);
+        border: none;
+        box-shadow: var(--shadow);
+        align-items: center;
+        padding: 25px;
+        max-width: 380px;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        animation: modalSlideIn 0.3s ease;
+      }
+
+      .modal-header {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        position: sticky;
+        top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        color: var(--blue);
+        font-size: 22px;
+        cursor: pointer;
+        padding: 5px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        transition: var(--transition);
+      }
+
+
+      /* Avatar Modal */
+      .avatar-preview-large {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        overflow: hidden;
+        border: 4px solid var(--blue);
+      }
+
+      .avatar-preview-large img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 245px;
+        width: 100%;
+        max-height: 300px;
+       justify-content: center;
+        overflow-y: auto;
+        padding: 10px;
+      }
+
+      .avatar-option {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        padding: 30px;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-size: 32px;
+        box-shadow: var(--element-shadow);
+      }
+
+      .avatar-option:hover {
+        transform: scale(1.1);
+      }
+
+      .avatar-option.selected {
+        border-color: var(--ios-blue);
+        transform: scale(1.1);
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+      }
+
+      .avatar-option i {
+        font-size: 32px;
+        color: var(--ios-white);
+      }
+
+      /* Avatar colors */
+      .avatar-blue { background: var(--blue); }
+      .avatar-green { background: var(--green); }
+      .avatar-red { background: var(--red); }
+      .avatar-purple { background: var(--purple); }
+      .avatar-orange { background: var(--orange); }
+      .avatar-yellow { background: var(--yellow); }
+      .avatar-teal { background: var(--teal); }
+      .avatar-pink { background: var(--pink); }
+      .avatar-indigo { background: var(--indigo); }
+
+      .avatar-upload {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .upload-button {
+        width: 100%;
+        padding: 15px;
+       background:var(--glass-bg);
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        color: var(--white);
+        font-size: 16px;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .upload-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--blue);
+      }
+
+      /* Input Modal */
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .input-label {
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--gray);
+      }
+
+      .modal-input {
+        width: 100%;
+        padding: 16px;
+        background: var(--glass-bg);
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+        border-radius: 18px;
+        color: var(--white);
+        font-size: 16px;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .modal-input:focus {
+        outline: none;
+        border-color: var(--blue);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .input-hint {
+        font-size: 13px;
+        color: var(--gray);
+        margin-top: 5px;
+      }
+
+      .input-error {
+        font-size: 13px;
+        color: var(--red);
+        margin-top: 5px;
+        display: none;
+      }
+
+      .input-error.show {
+        display: block;
+      }
+
+      .current-value {
+        background: var(--glass-bg);
+        border-radius: 18px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow);
+      }
+
+      .current-value-label {
+        color: var(--gray);
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      .current-value-text {
+        font-weight: 500;
+      }
+
+      /* Password Requirements */
+      .password-requirements {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 13px;
+        color: var(--ios-gray);
+      }
+
+      .requirement-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+      }
+
+      .requirement-item.valid {
+        color: var(--green);
+      }
+
+      .requirement-item.invalid {
+        color: var(--red);
+      }
+
+      /* Modal Actions */
+      .modal-actions {
+        display: flex;
+        width: 100%;
+        position: fixed;
+        bottom: 20px;
+        gap: 10px;
+        max-width: 330px;
+        width: 100%;
+      }
+
+      .modal-button {
+        flex: 1;
+        padding: 14px;
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+      }
+
+      .modal-button.primary {
+        background: var(--blue);
+        color: var(--white);
+        box-shadow: var(--element-shadow);
+      }
+
+      .modal-button.secondary {
+        background: rgba(24, 24, 26, 0.7);
+        
+        color: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      .modal-button.danger {
+        background: var(--red);
+        color: var(--white);
+      }
+
+      .modal-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+
+      .success-checkmark {
+        color: var(--green);
+        font-size: 50px;
+        text-align: center;
+        margin: 200px 0 10px 0;
+        animation: scaleIn 0.3s ease;
+      }
+
+      .success-checkmark.show {
+        display: block;
+      }
+
+      /* Loading Spinner */
+      .modal-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--white);
+        animation: spin 1s ease-in-out infinite;
+        margin: 0 auto;
+      }
+
+      .modal-button.loading .modal-spinner {
+        display: block;
+      }
+
+      .modal-button.loading .button-text {
+        display: none;
+      }
+
+      /* Language List */
+      .language-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .language-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        box-shadow: var(--shadow);
+        background: var(--glass-bg);
+        border-radius: 24px;
+        border:var(--glass--border);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .language-item.active {
+        background: rgba(0, 122, 255, 0.1);
+        border: 1px solid var(--blue);
+      }
+
+      .language-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .language-flag {
+        font-size: 30px;
+      }
+
+      .language-details {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .language-name {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .language-native {
+        font-size: 13px;
+        color: var(--gray);
+      }
+
+      .language-check {
+        color: var(--blue);
+        font-size: 18px;
+        opacity: 0;
+      }
+
+      .language-item.active .language-check {
+        opacity: 1;
+      }
+
+      /* System Option */
+      .system-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background: var(--glass-bg);
+        border-radius: 24px;
+        border:var(--glass--border);
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: 15px;
+        box-shadow: var(--shadow);
+      }
+
+      .system-option:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .system-option.active {
+        background: rgba(0, 122, 255, 0.1);
+        border: 1px solid var(--blue);
+      }
+
+      .system-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blue);
+        font-size: 23px;
+      }
+
+      .system-details {
+        flex: 1;
+      }
+
+      .system-title {
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .system-description {
+        font-size: 13px;
+        color: var(--gray);
+      }
+
+      .system-check {
+        color: var(--blue);
+        font-size: 18px;
+        opacity: 0;
+      }
+
+      .system-option.active .system-check {
+        opacity: 1;
+      }
+
+      /* Volume Slider */
+      .volume-slider-container {
+        padding: 30px 20px;
+      }
+
+      /* Language Preview */
+      .language-preview-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .language-preview-modal.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .preview-content {
+        background: var(--card);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 320px;
+        width: 100%;
+        border: 2px solid var(--blue);
+        text-align: center;
+        animation: modalSlideIn 0.3s ease;
+      }
+
+      .preview-flag {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .preview-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .preview-message {
+        color: var(--gray);
+        margin-bottom: 25px;
+      }
+      
+
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes dangerShimmer {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes toggleBounce {
+        0%, 100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(3px);
+        }
+      }
+
+
+      .toast {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+          background:
+          radial-gradient(circle at 25% 30%, rgba(75, 75, 75, 0.08), transparent 45%),
+          radial-gradient(
+            circle at 75% 70%,
+            rgba(255, 255, 255, 0.06),
+            transparent 45%
+          );
+        backdrop-filter: blur(7px) saturate(150%);
+        -webkit-backdrop-filter: blur(7px) saturate(150%);
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 12px 20px;
+        color: var(--white);
+        font-size: 15px;
+        box-shadow: var(--shadow);
+        font-weight: 500;
+        z-index: 1000;
+        animation: toastSlideUp 0.3s ease;
+      }
+
+      @keyframes toastSlideUp {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      @keyframes toastSlideDown {
+        from {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+   
+      <div class="header"></div>
+      <!-- Account Settings Section -->
+             <div class="profile-header">
+        <div class="profile-avatar-large">
+          <img src="imgs/warptask_blue_icon.png" alt="Warptask" style="width: 83px" />
+        </div>
+        <h1>Warptask</h1>
+        <p class="profile-title">Created by XStudio</p>
+        <div class="profile-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <span>5.0 (89 reviews)</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-title" data-i18n="preferencesTitle">
+          PREFERENCES
+        </div>
+
+        <!-- Language -->
+        <div class="settings-item" onclick="openLanguageModal()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--purple)">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="language">Language</div>
+              <div class="item-description" data-i18n="languageDesc">
+                App language and region
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="currentLanguageDisplay">English</div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Default Category -->
+        <div class="settings-item" onclick="changeDefaultCategory()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--orange)">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="defaultCategory">
+                Default Category
+              </div>
+              <div class="item-description" data-i18n="defaultCategoryDesc">
+                Set default task category
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="defaultCategoryValue" data-i18n="categoryPersonal">
+            Personal
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="section-title" data-i18n="accountSettingsTitle">
+          ACCOUNT
+        </div>
+
+        <!-- Profile Picture/Avatar -->
+        <div class="settings-item" onclick="openAvatarSelector()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--blue)">
+              <div class="avatar-preview" id="avatarPreview">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="profilePicture">
+                Profile Picture
+              </div>
+              <div class="item-description" data-i18n="profilePictureDesc">
+                Change your avatar
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Display Name -->
+        <div class="settings-item" onclick="changeDisplayName()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--green)">
+              <i class="fas fa-signature"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="displayName">Display Name</div>
+              <div class="item-description" data-i18n="displayNameDesc">
+                Your name as shown to others
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="displayNameValue">User</div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Username -->
+        <div class="settings-item" onclick="changeUsername()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--purple)">
+              <i class="fas fa-at"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="username">Username</div>
+              <div class="item-description" data-i18n="usernameDesc">
+                Your unique identifier
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="usernameValue">@user123</div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Email -->
+        <div class="settings-item" onclick="changeEmail()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--orange)">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="email">Email</div>
+              <div class="item-description" data-i18n="emailDesc">
+                For account recovery and sync
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="emailValue">user@example.com</div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Change Password -->
+        <div class="settings-item" onclick="changePassword()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--yellow)">
+              <i class="fas fa-key"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="changePassword">
+                Change Password
+              </div>
+              <div class="item-description" data-i18n="changePasswordDesc">
+                Update your password
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <!-- Account Sync -->
+        <div class="settings-item">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--teal)">
+              <i class="fas fa-sync"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="accountSync">Account Sync</div>
+              <div class="item-description" data-i18n="accountSyncDesc">
+                Sync data across devices
+              </div>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="accountSyncToggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Preferences Section -->
+      
+
+      <!-- Music & Sound Section -->
+      <div class="settings-section">
+        <div class="section-title">MUSIC & SOUND</div>
+        <div class="settings-item" onclick="openVolumeSlider()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--red)">
+              <i class="fas fa-volume-up"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" dat
+              a-i18n="musicVolume">Music Volume</div>
+              <div class="item-description" data-i18n="musicVolumeDesc">
+                Adjust music volume level
+              </div>
+            </div>
+          </div>
+          <div class="item-value" id="volumeValue">70%</div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+        <div class="settings-item">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--green)">
+              <i class="fas fa-music"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="focusMusic">
+                Focus Mode Music
+              </div>
+              <div class="item-description" data-i18n="focusMusicDesc">
+                Relaxing music during focus sessions
+              </div>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="focusMusicToggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- AI Profile Section -->
+      <div class="settings-section">
+        <div class="section-title" data-i18n="aiProfileTitle">AI PROFILE</div>
+
+        <div class="settings-item" onclick="updateProfile()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--blue)">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="aiProfile">AI Profile</div>
+              <div class="item-description" data-i18n="aiProfileDesc">
+                Set up for personalized recommendations
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <div class="settings-item">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--purple)">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="enableAI">
+                Enable AI Assistant
+              </div>
+              <div class="item-description" data-i18n="enableAIDesc">
+                Turn on intelligent task suggestions
+              </div>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="aiEnabledToggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-item" onclick="setAPIKey()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--yellow)">
+              <i class="fas fa-key"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="apiKey">API Key</div>
+              <div class="item-description" id="apiKeyStatus" data-i18n="apiKeyNotSet">
+                Not set (using local AI)
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+      </div>
+
+      <!-- Data Section -->
+      <div class="settings-section">
+        <div class="section-title" data-i18n="dataTitle">DATA</div>
+        <div class="settings-item" onclick="exportData()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--blue)">
+              <i class="fas fa-upload"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="exportData">Export Data</div>
+              <div class="item-description" data-i18n="exportDataDesc">
+                Backup your tasks
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+        <div class="settings-item" onclick="importData()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--orange)">
+              <i class="fas fa-download"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="importData">Import Data</div>
+              <div class="item-description" data-i18n="importDataDesc">
+                Restore from backup
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-section danger-zone">
+        <div class="section-title" style="color: var(--red)" data-i18n="dangerZone">
+          DANGER ZONE
+        </div>
+        <div class="settings-item danger-item" onclick="clearAllData()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--red)">
+              <i class="fas fa-trash"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="clearAllData">
+                Clear All Data
+              </div>
+              <div class="item-description" data-i18n="clearAllDataDesc">
+                Permanently delete all tasks
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <div class="settings-item danger-item" onclick="logout()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--red)">
+              <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="logout">Logout</div>
+              <div class="item-description" data-i18n="logoutDesc">
+                Sign out from your account
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+
+        <div class="settings-item danger-item" onclick="deleteAccount()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--red)">
+              <i class="fas fa-user-slash"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="deleteAccount">
+                Delete Account
+              </div>
+              <div class="item-description" data-i18n="deleteAccountDesc">
+                Permanently delete your account
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div class="settings-section">
+        <div class="section-title" data-i18n="aboutTitle">ABOUT</div>
+        <div class="settings-item">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--blue)">
+              <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="version">Version</div>
+              <div class="item-description" data-i18n="beta">New Beta</div>
+            </div>
+          </div>
+          <div class="item-value">0.0.21</div>
+        </div>
+        <div class="settings-item">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--gray)">
+              <i class="fa-solid fa-code-branch"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="seria">Seria</div>
+            </div>
+          </div>
+          <div class="item-value">X-1C</div>
+        </div>
+        <div class="settings-item" onclick="showAbout()">
+          <div class="item-content">
+            <div class="item-icon" style="background: var(--green)">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="item-text">
+              <div class="item-title" data-i18n="about">About</div>
+              <div class="item-description" data-i18n="aboutDesc">
+                Learn more about WarpTask
+              </div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right item-arrow"></i>
+        </div>
+      </div>
+
+      
+
+    <!-- Bottom Navigation -->
+    <div class="nav">
+     
+      <div class="bottom-nav">
+        <span class="nav-indicator"></span>
+        <a href="index.html" class="nav-item" data-link>
+          <i class="fa-solid fa-house-circle-check" id="nav-icon"></i>
+        </a>
+        <a href="calendar.html" class="nav-item" data-link>
+          <i class="fa-solid fa-calendar" id="nav-icon"></i>
+        </a>
+        <a href="add.html" class="nav-item" data-link>
+          <i class="fa-solid fa-plus" id="nav-icon"></i>
+        </a>
+        <a href="stats.html" class="nav-item" data-link>
+          <i class="fa-solid fa-chart-pie" id="nav-icon"></i>
+        </a>
+        <a href="settings.html" class="nav-item active"  data-link>
+          <i class="fa-solid fa-bars" id="nav-icon"></i>
+        </a>
+      </div>
+       <div class="chat">
+        <a href="xgempage.html" style="color: var(--white)">
+            <i class="fas fa-comments" id="nav-icon"></i>
+          </a>
+      </div>
+    </div>
+
+    <!-- Avatar Modal -->
+    <div class="language-modal" id="avatarModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeAvatarModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="selectAvatar">Select Avatar</div>
+          
+        </div>
+
+        <div class="avatar-preview-large" id="avatarPreviewLarge">
+          <i class="fas fa-user" id="avatarPreviewIcon"></i>
+          <img id="avatarPreviewImage" style="display: none" />
+        </div>
+
+        <div class="avatar-options" id="avatarOptions">
+          <!-- Avatar options will be populated here -->
+        </div>
+
+        <div class="avatar-upload">
+          <input type="file" id="avatarUpload" accept="image/*" style="display: none" />
+          <button class="upload-button" onclick="document.getElementById('avatarUpload').click()">
+            <i class="fas fa-upload"></i>
+            <span data-i18n="uploadCustom">Upload Custom Image</span>
+          </button>
+          <div class="input-hint" data-i18n="uploadHint">
+            JPG, PNG or GIF up to 2MB
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closeAvatarModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="saveAvatar()" data-i18n="save" id="saveAvatarBtn">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display Name Modal -->
+    <div class="language-modal" id="displayNameModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeDisplayNameModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="changeDisplayName">Change Display Name</div>
+          
+        </div>
+
+        <div class="current-value">
+          <div class="current-value-label" data-i18n="currentDisplayName">Current display name:</div>
+          <div class="current-value-text" id="currentDisplayNameText">User</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="newDisplayName">New Display Name</label>
+          <input type="text" id="displayNameInput" class="modal-input" placeholder="Enter new display name" maxlength="30" />
+          <div class="input-hint" data-i18n="displayNameHint">Maximum 30 characters</div>
+          <div class="input-error" id="displayNameError"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closeDisplayNameModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="saveDisplayName()" data-i18n="save" id="saveDisplayNameBtn">
+            <span class="button-text">Save</span>
+            <div class="modal-spinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Username Modal -->
+    <div class="language-modal" id="usernameModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeUsernameModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="changeUsername">Change Username</div>
+          
+        </div>
+
+        <div class="current-value">
+          <div class="current-value-label" data-i18n="currentUsername">Current username:</div>
+          <div class="current-value-text" id="currentUsernameText">@user123</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="newUsername">New Username</label>
+          <div style="position: relative">
+            <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--ios-gray);">@</span>
+            <input type="text" id="usernameInput" class="modal-input" placeholder="username" maxlength="20" style="padding-left: 30px" />
+          </div>
+          <div class="input-hint" data-i18n="usernameHint">
+            3-20 characters, letters, numbers, underscores only
+          </div>
+          <div class="input-error" id="usernameError"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closeUsernameModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="saveUsername()" data-i18n="save" id="saveUsernameBtn" disabled>
+            <span class="button-text">Save</span>
+            <div class="modal-spinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="language-modal" id="emailModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeEmailModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="changeEmail">Change Email</div>
+          
+        </div>
+
+        <div class="current-value">
+          <div class="current-value-label" data-i18n="currentEmail">Current email:</div>
+          <div class="current-value-text" id="currentEmailText">user@example.com</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="newEmail">New Email Address</label>
+          <input type="email" id="emailInput" class="modal-input" placeholder="Enter new email address" />
+          <div class="input-hint" data-i18n="emailHint">For account recovery and sync</div>
+          <div class="input-error" id="emailError"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="confirmEmail">Confirm Email Address</label>
+          <input type="email" id="confirmEmailInput" class="modal-input" placeholder="Confirm new email address" />
+          <div class="input-error" id="confirmEmailError"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closeEmailModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="saveEmail()" data-i18n="save" id="saveEmailBtn" disabled>
+            <span class="button-text">Save</span>
+            <div class="modal-spinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="language-modal" id="passwordModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closePasswordModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="changePasswordTitle">Change Password</div>
+          
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="currentPassword">Current Password</label>
+          <div style="position: relative">
+            <input type="password" id="currentPasswordInput" class="modal-input" placeholder="Enter current password" />
+            <i class="fas fa-eye input-icon" onclick="togglePasswordVisibility('currentPasswordInput', this)"
+              style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+          </div>
+          <div class="input-error" id="currentPasswordError"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="newPassword">New Password</label>
+          <div style="position: relative">
+            <input type="password" id="newPasswordInput" class="modal-input" placeholder="Enter new password" />
+            <i class="fas fa-eye input-icon" onclick="togglePasswordVisibility('newPasswordInput', this)"
+              style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+          </div>
+          <div class="input-error" id="newPasswordError"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-i18n="confirmNewPassword">Confirm New Password</label>
+          <div style="position: relative">
+            <input type="password" id="confirmNewPasswordInput" class="modal-input" placeholder="Confirm new password" />
+            <i class="fas fa-eye input-icon" onclick="togglePasswordVisibility('confirmNewPasswordInput', this)"
+              style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+          </div>
+          <div class="input-error" id="confirmNewPasswordError"></div>
+        </div>
+
+        <div class="password-requirements">
+          <div class="requirement-item" id="reqLength">
+            <i class="fas fa-circle"></i>
+            <span data-i18n="reqLength">At least 8 characters</span>
+          </div>
+          <div class="requirement-item" id="reqLetter">
+            <i class="fas fa-circle"></i>
+            <span data-i18n="reqLetter">At least one letter</span>
+          </div>
+          <div class="requirement-item" id="reqNumber">
+            <i class="fas fa-circle"></i>
+            <span data-i18n="reqNumber">At least one number</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closePasswordModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="savePassword()" data-i18n="save" id="savePasswordBtn" disabled>
+            <span class="button-text">Save</span>
+            <div class="modal-spinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div class="language-modal" id="languageModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeLanguageModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="selectLanguage">Select Language</div>
+          
+        </div>
+
+        <div class="system-option" id="systemOption" onclick="selectSystemLanguage()">
+          <div class="system-info">
+            <div class="system-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="system-details">
+              <div class="system-title" data-i18n="useSystem">Use System Language</div>
+              <div class="system-description" data-i18n="systemLanguageDesc">Follow your device settings</div>
+            </div>
+          </div>
+          <div class="system-check">
+            <i class="fas fa-check"></i>
+          </div>
+        </div>
+
+        <div class="language-list" id="languageList">
+          <!-- Languages will be populated here -->
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-button secondary" onclick="closeLanguageModal()" data-i18n="cancel">
+            Cancel
+          </button>
+          <button class="modal-button primary" onclick="applyLanguage()" data-i18n="apply">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="language-modal" id="successModal">
+      <div class="modal-content" style="text-align: center">
+        <div class="success-checkmark" id="successCheckmark">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="modal-title" id="successTitle" data-i18n="changesSaved">Changes Saved</div>
+        <div class="preview-message" id="successMessage" data-i18n="changesSavedDesc">
+          Your changes have been saved successfully.
+        </div>
+        <div class="modal-actions" style="justify-content: center">
+          <button class="modal-button primary" onclick="closeSuccessModal()" data-i18n="continue">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volume Modal -->
+    <div class="language-modal" id="volumeModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-modal" onclick="closeVolumeModal()"><i class="fa-solid fa-angle-left"></i></button>
+          <div class="modal-title" data-i18n="adjustVolume">Adjust Volume</div>
+          
+        </div>
+
+        <div class="volume-slider-container">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+            <span style="color: var(--gray)">0%</span>
+            <span id="currentVolumeDisplay" style="font-weight: bold">70%</span>
+            <span style="color: var(--gray)">100%</span>
+          </div>
+
+          <input type="range" id="volumeSlider" min="0" max="100" value="70" style="
+              width: 100%;
+              height: 4px;
+              background: var(--light-gray);
+              border-radius: 2px;
+              outline: none;
+            " />
+
+          <div style="display: flex; justify-content: center; gap: 15px; margin-top: 30px">
+            <button class="modal-button secondary" onclick="closeVolumeModal()" data-i18n="cancel">
+              Cancel
+            </button>
+            <button class="modal-button primary" onclick="saveVolume()" data-i18n="save">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Preview Modal -->
+    <div class="language-preview-modal" id="languagePreview">
+      <div class="preview-content">
+        <div class="preview-flag" id="previewFlag">🇺🇸</div>
+        <div class="preview-title" id="previewTitle">English</div>
+        <div class="preview-message" data-i18n="languageChanged">Language changed successfully!</div>
+        <button class="modal-button primary" onclick="closePreview()" data-i18n="continue">
+          Continue
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // ==================== TIL TIZIMI ====================
+
+// TILLAR RO'YXATI
+const languages = [
+    { id: "en", name: "English", native: "English", flag: "🇺🇸", direction: "ltr" },
+    { id: "ru", name: "Russian", native: "Русский", flag: "🇷🇺", direction: "ltr" },
+    { id: "uz", name: "Uzbek", native: "O'zbekcha", flag: "🇺🇿", direction: "ltr" },
+];
+
+// TARJIMALAR
+const translations = {
+    en: {
+        settingsTitle: "Settings",
+        accountSettingsTitle: "ACCOUNT",
+        profilePicture: "Profile Picture",
+        profilePictureDesc: "Change your avatar",
+        displayName: "Display Name",
+        displayNameDesc: "Your name as shown to others",
+        username: "Username",
+        usernameDesc: "Your unique identifier",
+        email: "Email",
+        emailDesc: "For account recovery and sync",
+        changePassword: "Change Password",
+        changePasswordDesc: "Update your password",
+        accountSync: "Account Sync",
+        accountSyncDesc: "Sync data across devices",
+        preferencesTitle: "PREFERENCES",
+        language: "Language",
+        languageDesc: "App language and region",
+        defaultCategory: "Default Category",
+        defaultCategoryDesc: "Set default task category",
+        categoryPersonal: "Personal",
+        categoryWork: "Work",
+        focusMusic: "Focus Mode Music",
+        focusMusicDesc: "Relaxing music during focus sessions",
+        musicVolume: "Music Volume",
+        musicVolumeDesc: "Adjust music volume level",
+        aiProfileTitle: "AI PROFILE",
+        aiProfile: "AI Profile",
+        aiProfileDesc: "Set up for personalized recommendations",
+        enableAI: "Enable AI Assistant",
+        enableAIDesc: "Turn on intelligent task suggestions",
+        apiKey: "API Key",
+        apiKeyNotSet: "Not set (using local AI)",
+        dataTitle: "DATA",
+        exportData: "Export Data",
+        exportDataDesc: "Backup your tasks",
+        importData: "Import Data",
+        importDataDesc: "Restore from backup",
+        dangerZone: "DANGER ZONE",
+        clearAllData: "Clear All Data",
+        clearAllDataDesc: "Permanently delete all tasks",
+        logout: "Logout",
+        logoutDesc: "Sign out from your account",
+        deleteAccount: "Delete Account",
+        deleteAccountDesc: "Permanently delete your account",
+        aboutTitle: "ABOUT",
+        version: "Version",
+        beta: "New Beta",
+        seria: "Seria",
+        about: "About",
+        aboutDesc: "Learn more about WarpTask",
+        selectLanguage: "Select Language",
+        useSystem: "Use System Language",
+        systemLanguageDesc: "Follow your device settings",
+        cancel: "Cancel",
+        apply: "Apply",
+        languageChanged: "Language changed successfully!",
+        continue: "Continue",
+        selectAvatar: "Select Avatar",
+        uploadCustom: "Upload Custom Image",
+        uploadHint: "JPG, PNG or GIF up to 2MB",
+        changeDisplayName: "Change Display Name",
+        currentDisplayName: "Current display name:",
+        newDisplayName: "New Display Name",
+        displayNameHint: "Maximum 30 characters",
+        changeUsername: "Change Username",
+        currentUsername: "Current username:",
+        newUsername: "New Username",
+        usernameHint: "3-20 characters, letters, numbers, underscores only",
+        changeEmail: "Change Email",
+        currentEmail: "Current email:",
+        newEmail: "New Email Address",
+        emailHint: "For account recovery and sync",
+        confirmEmail: "Confirm Email Address",
+        changePasswordTitle: "Change Password",
+        currentPassword: "Current Password",
+        newPassword: "New Password",
+        confirmNewPassword: "Confirm New Password",
+        reqLength: "At least 8 characters",
+        reqLetter: "At least one letter",
+        reqNumber: "At least one number",
+        adjustVolume: "Adjust Volume",
+        changesSaved: "Changes Saved",
+        changesSavedDesc: "Your changes have been saved successfully.",
+        save: "Save",
+        yes: "Yes",
+        no: "No",
+        ok: "OK",
+        delete: "Delete",
+        confirm: "Confirm",
+        loading: "Loading...",
+        success: "Success",
+        error: "Error",
+        settingsSaved: "Settings saved",
+        comingSoon: "Coming soon!",
+        enterAPIKey: "Enter your API key:",
+        set: "Set",
+        apiKeySaved: "API key saved",
+        clearAllDataConfirm: "Are you sure you want to delete all tasks? This action cannot be undone.",
+        allDataCleared: "All data cleared",
+        confirmLogout: "Are you sure you want to logout?",
+        confirmDeleteAccount: "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.",
+        deletingAccount: "Deleting account...",
+        accountDeleted: "Account deleted successfully",
+        aboutText: "WarpTask New Beta v0.0.21\n\nA beautiful task manager app.\n\nFeatures:\n• Add and manage tasks\n• Focus on productivity\n• Categorize your tasks\n• Calendar view\n• Statistics and insights\n• Dark mode support\n• Multi-language support\n\nThank you for using WarpTask! ❤️",
+        invalidFile: "Invalid file format",
+        displayNameRequired: "Display name is required",
+        displayNameTooLong: "Display name must be 30 characters or less",
+        usernameRequired: "Username is required",
+        usernameInvalid: "3-20 characters, letters, numbers, underscores only",
+        emailInvalid: "Please enter a valid email address",
+        emailsDontMatch: "Email addresses don't match",
+        passwordInvalid: "Password doesn't meet requirements",
+        passwordsDontMatch: "Passwords don't match",
+        currentPasswordRequired: "Current password is required",
+    },
+    ru: {
+        settingsTitle: "Настройки",
+        accountSettingsTitle: "АККАУНТ",
+        profilePicture: "Фото профиля",
+        profilePictureDesc: "Изменить аватар",
+        displayName: "Отображаемое имя",
+        displayNameDesc: "Ваше имя, которое видят другие",
+        username: "Имя пользователя",
+        usernameDesc: "Ваш уникальный идентификатор",
+        email: "Email",
+        emailDesc: "Для восстановления аккаунта и синхронизации",
+        changePassword: "Изменить пароль",
+        changePasswordDesc: "Обновить пароль",
+        accountSync: "Синхронизация аккаунта",
+        accountSyncDesc: "Синхронизация данных между устройствами",
+        preferencesTitle: "ПРЕДПОЧТЕНИЯ",
+        language: "Язык",
+        languageDesc: "Язык приложения и регион",
+        defaultCategory: "Категория по умолчанию",
+        defaultCategoryDesc: "Установить категорию по умолчанию",
+        categoryPersonal: "Личное",
+        categoryWork: "Работа",
+        focusMusic: "Музыка для фокуса",
+        focusMusicDesc: "Расслабляющая музыка во время сессий фокуса",
+        musicVolume: "Громкость музыки",
+        musicVolumeDesc: "Настроить уровень громкости музыки",
+        aiProfileTitle: "AI ПРОФИЛЬ",
+        aiProfile: "AI Профиль",
+        aiProfileDesc: "Настройка для персонализированных рекомендаций",
+        enableAI: "Включить AI Помощник",
+        enableAIDesc: "Включить интеллектуальные предложения задач",
+        apiKey: "API Ключ",
+        apiKeyNotSet: "Не установлен (используется локальный AI)",
+        dataTitle: "ДАННЫЕ",
+        exportData: "Экспорт данных",
+        exportDataDesc: "Резервное копирование задач",
+        importData: "Импорт данных",
+        importDataDesc: "Восстановить из резервной копии",
+        dangerZone: "ОПАСНАЯ ЗОНА",
+        clearAllData: "Удалить все данные",
+        clearAllDataDesc: "Навсегда удалить все задачи",
+        logout: "Выйти",
+        logoutDesc: "Выйти из аккаунта",
+        deleteAccount: "Удалить аккаунт",
+        deleteAccountDesc: "Навсегда удалить ваш аккаунт",
+        aboutTitle: "О ПРИЛОЖЕНИИ",
+        version: "Версия",
+        beta: "Новая Бета",
+        seria: "Серия",
+        about: "О программе",
+        aboutDesc: "Узнать больше о WarpTask",
+        selectLanguage: "Выберите язык",
+        useSystem: "Использовать системный язык",
+        systemLanguageDesc: "Следовать настройкам устройства",
+        cancel: "Отмена",
+        apply: "Применить",
+        languageChanged: "Язык успешно изменён!",
+        continue: "Продолжить",
+        selectAvatar: "Выбрать аватар",
+        uploadCustom: "Загрузить своё изображение",
+        uploadHint: "JPG, PNG или GIF до 2МБ",
+        changeDisplayName: "Изменить отображаемое имя",
+        currentDisplayName: "Текущее имя:",
+        newDisplayName: "Новое отображаемое имя",
+        displayNameHint: "Максимум 30 символов",
+        changeUsername: "Изменить имя пользователя",
+        currentUsername: "Текущее имя пользователя:",
+        newUsername: "Новое имя пользователя",
+        usernameHint: "3-20 символов, буквы, цифры, подчёркивания",
+        changeEmail: "Изменить Email",
+        currentEmail: "Текущий email:",
+        newEmail: "Новый адрес email",
+        emailHint: "Для восстановления аккаунта и синхронизации",
+        confirmEmail: "Подтвердите адрес email",
+        changePasswordTitle: "Изменить пароль",
+        currentPassword: "Текущий пароль",
+        newPassword: "Новый пароль",
+        confirmNewPassword: "Подтвердите новый пароль",
+        reqLength: "Не менее 8 символов",
+        reqLetter: "Хотя бы одна буква",
+        reqNumber: "Хотя бы одна цифра",
+        adjustVolume: "Настроить громкость",
+        changesSaved: "Изменения сохранены",
+        changesSavedDesc: "Ваши изменения успешно сохранены.",
+        save: "Сохранить",
+        yes: "Да",
+        no: "Нет",
+        ok: "ОК",
+        delete: "Удалить",
+        confirm: "Подтвердить",
+        loading: "Загрузка...",
+        success: "Успешно",
+        error: "Ошибка",
+        settingsSaved: "Настройки сохранены",
+        comingSoon: "Скоро!",
+        enterAPIKey: "Введите ваш API ключ:",
+        set: "Установлен",
+        apiKeySaved: "API ключ сохранён",
+        clearAllDataConfirm: "Вы уверены, что хотите удалить все задачи? Это действие нельзя отменить.",
+        allDataCleared: "Все данные удалены",
+        confirmLogout: "Вы уверены, что хотите выйти?",
+        confirmDeleteAccount: "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить и все ваши данные будут безвозвратно утеряны.",
+        deletingAccount: "Удаление аккаунта...",
+        accountDeleted: "Аккаунт успешно удалён",
+        aboutText: "WarpTask Новая Beta v0.0.21\n\nКрасивое приложение для управления задачами.\n\nВозможности:\n• Добавление и управление задачами\n• Фокус на продуктивности\n• Категоризация задач\n• Календарный вид\n• Статистика и аналитика\n• Поддержка тёмной темы\n• Поддержка нескольких языков\n\nСпасибо за использование WarpTask! ❤️",
+        invalidFile: "Неверный формат файла",
+        displayNameRequired: "Имя обязательно",
+        displayNameTooLong: "Имя должно быть не более 30 символов",
+        usernameRequired: "Имя пользователя обязательно",
+        usernameInvalid: "3-20 символов, буквы, цифры, подчёркивания",
+        emailInvalid: "Введите правильный email адрес",
+        emailsDontMatch: "Email адреса не совпадают",
+        passwordInvalid: "Пароль не соответствует требованиям",
+        passwordsDontMatch: "Пароли не совпадают",
+        currentPasswordRequired: "Текущий пароль обязателен",
+    },
+    uz: {
+        settingsTitle: "Sozlamalar",
+        accountSettingsTitle: "AKKAUNT",
+        profilePicture: "Profil rasmi",
+        profilePictureDesc: "Avatarizni o'zgartirish",
+        displayName: "Ko'rinadigan ism",
+        displayNameDesc: "Boshqalar ko'radigan ismingiz",
+        username: "Foydalanuvchi nomi",
+        usernameDesc: "Sizning noyob identifikatoringiz",
+        email: "Email",
+        emailDesc: "Akkaunt tiklash va sinxronizatsiya uchun",
+        changePassword: "Parolni o'zgartirish",
+        changePasswordDesc: "Parolni yangilash",
+        accountSync: "Akkaunt sinxi",
+        accountSyncDesc: "Qurilmalar orasida ma'lumotlarni sinxronizatsiya qilish",
+        preferencesTitle: "AFZALLIKLAR",
+        language: "Til",
+        languageDesc: "Ilova tili va mintaqa",
+        defaultCategory: "Standart toifa",
+        defaultCategoryDesc: "Standart vazifa toifasini o'rnatish",
+        categoryPersonal: "Shaxsiy",
+        categoryWork: "Ish",
+        focusMusic: "Focus rejim musiqasi",
+        focusMusicDesc: "Fokus sessiyalari paytida dam beradigan musiqa",
+        musicVolume: "Musiqa balandligi",
+        musicVolumeDesc: "Musiqa balandligi darajasini sozlash",
+        aiProfileTitle: "AI PROFIL",
+        aiProfile: "AI Profil",
+        aiProfileDesc: "Shaxsiylashtirilgan tavsiyalar uchun sozlash",
+        enableAI: "AI Yordamchisini yoqish",
+        enableAIDesc: "Aqlli vazifa takliflarini yoqish",
+        apiKey: "API Kaliti",
+        apiKeyNotSet: "O'rnatilmagan (mahalliy AI ishlatilmoqda)",
+        dataTitle: "MA'LUMOTLAR",
+        exportData: "Ma'lumotlarni eksport qilish",
+        exportDataDesc: "Vazifalarni zaxiralash",
+        importData: "Ma'lumotlarni import qilish",
+        importDataDesc: "Zaxiradan tiklash",
+        dangerZone: "XAVFLI ZONA",
+        clearAllData: "Barcha ma'lumotlarni tozalash",
+        clearAllDataDesc: "Barcha vazifalarni butunlay o'chirish",
+        logout: "Chiqish",
+        logoutDesc: "Akkauntdan chiqish",
+        deleteAccount: "Akkauntni o'chirish",
+        deleteAccountDesc: "Akkauntingizni butunlay o'chirish",
+        aboutTitle: "HAQIDA",
+        version: "Versiya",
+        beta: "Yangi Beta",
+        seria: "Seriya",
+        about: "Haqida",
+        aboutDesc: "WarpTask haqida ko'proq bilib oling",
+        selectLanguage: "Tilni tanlang",
+        useSystem: "Tizim tilidan foydalanish",
+        systemLanguageDesc: "Qurilma sozlamalariga rioya qiling",
+        cancel: "Bekor qilish",
+        apply: "Qo'llash",
+        languageChanged: "Til muvaffaqiyatli o'zgartirildi!",
+        continue: "Davom etish",
+        selectAvatar: "Avatar tanlash",
+        uploadCustom: "O'z rasmingizni yuklash",
+        uploadHint: "JPG, PNG yoki GIF, maksimal 2MB",
+        changeDisplayName: "Ko'rinadigan ismni o'zgartirish",
+        currentDisplayName: "Joriy ko'rinadigan ism:",
+        newDisplayName: "Yangi ko'rinadigan ism",
+        displayNameHint: "Maksimal 30 belgi",
+        changeUsername: "Foydalanuvchi nomini o'zgartirish",
+        currentUsername: "Joriy foydalanuvchi nomi:",
+        newUsername: "Yangi foydalanuvchi nomi",
+        usernameHint: "3-20 belgi, harflar, raqamlar, pastki chiziq",
+        changeEmail: "Emailni o'zgartirish",
+        currentEmail: "Joriy email:",
+        newEmail: "Yangi email manzili",
+        emailHint: "Akkaunt tiklash va sinxronizatsiya uchun",
+        confirmEmail: "Email manzilini tasdiqlang",
+        changePasswordTitle: "Parolni o'zgartirish",
+        currentPassword: "Joriy parol",
+        newPassword: "Yangi parol",
+        confirmNewPassword: "Yangi parolni tasdiqlang",
+        reqLength: "Kamida 8 belgi",
+        reqLetter: "Kamida bitta harf",
+        reqNumber: "Kamida bitta raqam",
+        adjustVolume: "Balandlikni sozlash",
+        changesSaved: "O'zgarishlar saqlandi",
+        changesSavedDesc: "O'zgarishlaringiz muvaffaqiyatli saqlandi.",
+        save: "Saqlash",
+        yes: "Ha",
+        no: "Yo'q",
+        ok: "OK",
+        delete: "O'chirish",
+        confirm: "Tasdiqlash",
+        loading: "Yuklanmoqda...",
+        success: "Muvaffaqiyatli",
+        error: "Xato",
+        settingsSaved: "Sozlamalar saqlandi",
+        comingSoon: "Tez orada!",
+        enterAPIKey: "API kalitingizni kiriting:",
+        set: "O'rnatildi",
+        apiKeySaved: "API kaliti saqlandi",
+        clearAllDataConfirm: "Barcha vazifalarni o'chirishni istaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+        allDataCleared: "Barcha ma'lumotlar tozalandi",
+        confirmLogout: "Chiqishni istaysizmi?",
+        confirmDeleteAccount: "Akkauntingizni o'chirishni istaysizmi? Bu amalni bekor qilib bo'lmaydi va barcha ma'lumotlaringiz butunlay yo'qoladi.",
+        deletingAccount: "Akkaunt o'chirilmoqda...",
+        accountDeleted: "Akkaunt muvaffaqiyatli o'chirildi",
+        aboutText: "WarpTask Yangi Beta v0.0.21\n\nVazifa menejeri ilovasi.\n\nImkoniyatlar:\n• Vazifa qo'shish va boshqarish\n• Samaradorlikka qaratilish\n• Vazifalarni toifalash\n• Kalendar ko'rinishi\n• Statistika va tahlillar\n• Qorong'u rejim qo'llab-quvvatlashi\n• Ko'p tilli qo'llab-quvvatlash\n\nWarpTask-dan foydalanganingiz uchun rahmat! ❤️",
+        invalidFile: "Noto'g'ri fayl formati",
+        displayNameRequired: "Ism talab qilinadi",
+        displayNameTooLong: "Ism 30 belgidan oshmasligi kerak",
+        usernameRequired: "Foydalanuvchi nomi talab qilinadi",
+        usernameInvalid: "3-20 belgi, harflar, raqamlar, pastki chiziq",
+        emailInvalid: "Iltimos, to'g'ri email manzilini kiriting",
+        emailsDontMatch: "Email manzillari mos kelmadi",
+        passwordInvalid: "Parol talablarga javob bermaydi",
+        passwordsDontMatch: "Parollar mos kelmadi",
+        currentPasswordRequired: "Joriy parol talab qilinadi",
+    }
+};
+
+// ==================== AVATAR TIZIMI ====================
+
+const AvatarColors = {
+    'blue': '#007AFF',
+    'green': '#34C759',
+    'red': '#FF3B30',
+    'yellow': '#FFCC00',
+    'purple': '#AF52DE',
+    'orange': '#FF9500',
+    'teal': '#5AC8FA',
+    'pink': '#FF2D55',
+    'indigo': '#5856D6'
+};
+
+const DefaultAvatars = [
+    { id: 'avatar1', icon: 'fa-user', color: 'blue', name: 'User' },
+    { id: 'avatar2', icon: 'fa-smile', color: 'green', name: 'Smile' },
+    { id: 'avatar3', icon: 'fa-ghost', color: 'red', name: 'Ghost' },
+    { id: 'avatar4', icon: 'fa-crown', color: 'yellow', name: 'Crown' },
+    { id: 'avatar5', icon: 'fa-cat', color: 'purple', name: 'Cat' },
+    { id: 'avatar6', icon: 'fa-apple-whole', color: 'orange', name: 'Apple' },
+    { id: 'avatar7', icon: 'fa-star', color: 'teal', name: 'Star' },
+    { id: 'avatar8', icon: 'fa-heart', color: 'pink', name: 'Heart' },
+    { id: 'avatar9', icon: 'fa-bolt', color: 'indigo', name: 'Bolt' }
+];
+
+const AvatarSystem = {
+    loadUserAvatar: function() {
+        try {
+            const user = JSON.parse(localStorage.getItem('wzCurrentUser'));
+            if (user && user.avatarType) {
+                return {
+                    type: user.avatarType,
+                    id: user.avatarId || 'avatar1',
+                    icon: user.avatarIcon || 'fa-user',
+                    color: user.avatarColor || 'blue',
+                    data: user.avatarData
+                };
+            }
+            
+            const savedAvatar = localStorage.getItem('wzUserAvatar');
+            if (savedAvatar) {
+                return JSON.parse(savedAvatar);
+            }
+        } catch(e) {
+            console.error('Avatar yuklashda xato:', e);
+        }
+        
+        return { type: 'default', id: 'avatar1', icon: 'fa-user', color: 'blue' };
+    },
+
+    saveAvatar: function(avatarData) {
+        try {
+            let user = JSON.parse(localStorage.getItem('wzCurrentUser')) || {};
+            if (Object.keys(user).length === 0) {
+                user = {
+                    displayName: 'User',
+                    username: '@user',
+                    email: 'user@example.com'
+                };
+            }
+            
+            user.avatarType = avatarData.type;
+            user.avatarId = avatarData.id;
+            user.avatarIcon = avatarData.icon;
+            user.avatarColor = avatarData.color;
+            
+            if (avatarData.type === 'custom' && avatarData.data) {
+                user.avatarData = avatarData.data;
+            } else {
+                delete user.avatarData;
+            }
+            
+            localStorage.setItem('wzCurrentUser', JSON.stringify(user));
+            
+            localStorage.setItem('wzUserAvatar', JSON.stringify({
+                type: avatarData.type,
+                id: avatarData.id,
+                icon: avatarData.icon,
+                color: avatarData.color,
+                data: avatarData.data
+            }));
+            
+            this.notifyAvatarChange();
+            return true;
+        } catch(e) {
+            console.error('Avatar saqlashda xato:', e);
+            return false;
+        }
+    },
+
+    notifyAvatarChange: function() {
+        localStorage.setItem('wzAvatarRefresh', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('avatar-updated'));
+    },
+
+    updatePreview: function(avatar, previewSmall, previewLarge) {
+        if (!previewSmall || !previewLarge) return;
+        
+        if (avatar.type === 'custom' && avatar.data) {
+            previewSmall.innerHTML = `<img src="${avatar.data}" alt="Avatar" style="width:100%; height:3px; `;
+            previewLarge.innerHTML = `<img src="${avatar.data}" alt="Avatar" style="width:100%; height:3px; `;
+            previewLarge.style.background = 'transparent';
+        } else {
+            const defaultAvatar = DefaultAvatars.find(a => a.id === avatar.id) || DefaultAvatars[0];
+            const bgColor = AvatarColors[defaultAvatar.color] || AvatarColors.blue;
+            
+            previewSmall.innerHTML = `<i class="fas ${defaultAvatar.icon}" style="font-size: 16px; color: white;"></i>`;
+            previewLarge.innerHTML = `<i class="fas ${defaultAvatar.icon}" style="font-size: 48px; color: white;"></i>`;
+            previewLarge.style.background = bgColor;
+            previewSmall.style.background = bgColor;
+        }
+        
+        previewLarge.style.border = '4px solid var(--blue)';
+        previewSmall.style.display = 'flex';
+        previewSmall.style.alignItems = 'center';
+        previewSmall.style.justifyContent = 'center';
+        previewLarge.style.display = 'flex';
+        previewLarge.style.alignItems = 'center';
+        previewLarge.style.justifyContent = 'center';
+    },
+
+    populateOptions: function(container, selectedAvatar, onSelect) {
+        if (!container) return;
+        container.innerHTML = '';
+        
+        DefaultAvatars.forEach(avatar => {
+            const option = document.createElement('div');
+            option.className = 'avatar-option';
+            option.dataset.id = avatar.id;
+            option.dataset.icon = avatar.icon;
+            option.dataset.color = avatar.color;
+            
+            const isSelected = selectedAvatar && selectedAvatar.id === avatar.id;
+            const bgColor = AvatarColors[avatar.color] || AvatarColors.blue;
+            
+            option.style.cssText = `
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: ${bgColor};
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25),        
+    inset 0 1px 1px rgba(255, 255, 255, 0.35), 
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25); 
+            `;
+            
+            option.innerHTML = `<i class="fas ${avatar.icon}" style="font-size: 31px; color: white;"></i>`;
+            
+            option.onclick = () => {
+                document.querySelectorAll('.avatar-option').forEach(opt => {
+                    opt.style.border = '2px solid transparent';
+                    opt.style.boxShadow = 'none';
+                });
+                option.style.border = '3px solid white';
+                option.style.boxShadow = '0 0 0 3px rgba(0,122,255,0.3)';
+                
+                if (onSelect) {
+                    onSelect({
+                        type: 'default',
+                        id: avatar.id,
+                        icon: avatar.icon,
+                        color: avatar.color
+                    });
+                }
+            };
+            
+            container.appendChild(option);
+        });
+    }
+};
+
+// ==================== GLOBAL O'ZGARUVCHILAR ====================
+
+let currentLanguage = 'en';
+let selectedLanguage = 'en';
+let useSystemLanguage = false;
+let selectedAvatar = { type: 'default', id: 'avatar1', icon: 'fa-user', color: 'blue' };
+
+// ==================== ASOSIY FUNKSIYALAR ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Settings page loaded');
+    
+    loadLanguageSettings();
+    loadSettings();
+    updateUI();
+    updateLanguageDisplay();
+    initAvatarSystem();
+    initEventListeners();
+    updateAccountInfo();
+});
+
+// Til sozlamalarini yuklash
+function loadLanguageSettings() {
+    try {
+        const settings = JSON.parse(localStorage.getItem('wzLanguageSettings')) || {};
+        
+        if (settings.useSystemLanguage === true) {
+            useSystemLanguage = true;
+            const systemLang = navigator.language.substring(0, 2);
+            currentLanguage = languages.some(l => l.id === systemLang) ? systemLang : 'en';
+        } else {
+            useSystemLanguage = false;
+            currentLanguage = settings.language || 'en';
+        }
+        
+        selectedLanguage = currentLanguage;
+        document.getElementById('htmlLang').lang = currentLanguage;
+        localStorage.setItem('wzCurrentLanguage', currentLanguage);
+    } catch(e) {
+        console.error('Til sozlamalarini yuklashda xato:', e);
+    }
+}
+
+// Sozlamalarni yuklash
+function loadSettings() {
+    try {
+        const settings = JSON.parse(localStorage.getItem('wzSettings')) || {};
+        
+        if (settings.defaultCategory) {
+            const categoryKey = 'category' + settings.defaultCategory.charAt(0).toUpperCase() + settings.defaultCategory.slice(1);
+            const categoryText = translations[currentLanguage][categoryKey] || settings.defaultCategory;
+            document.getElementById('defaultCategoryValue').textContent = categoryText;
+        }
+        
+        const volumeSettings = JSON.parse(localStorage.getItem('wzVolumeSettings')) || { volume: 70 };
+        document.getElementById('volumeValue').textContent = `${volumeSettings.volume}%`;
+        document.getElementById('volumeSlider').value = volumeSettings.volume;
+        document.getElementById('currentVolumeDisplay').textContent = `${volumeSettings.volume}%`;
+        
+        const focusMusic = JSON.parse(localStorage.getItem('wzFocusMusic')) || { enabled: true };
+        document.getElementById('focusMusicToggle').checked = focusMusic.enabled;
+        
+        const aiEnabled = JSON.parse(localStorage.getItem('wzAiEnabled')) || { enabled: true };
+        document.getElementById('aiEnabledToggle').checked = aiEnabled.enabled;
+        
+        const accountSync = JSON.parse(localStorage.getItem('wzAccountSync')) || { enabled: true };
+        document.getElementById('accountSyncToggle').checked = accountSync.enabled;
+        
+        const apiKey = localStorage.getItem('wzApiKey');
+        if (apiKey) {
+            document.getElementById('apiKeyStatus').textContent = translations[currentLanguage]['set'] || 'Set';
+        }
+    } catch(e) {
+        console.error('Sozlamalarni yuklashda xato:', e);
+    }
+}
+
+// UI ni yangilash
+function updateUI() {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = translations[currentLanguage][key];
+        
+        if (translation) {
+            if (element.tagName === 'INPUT' && element.placeholder !== undefined) {
+                element.placeholder = translation;
+            } else {
+                element.textContent = translation;
+            }
+        }
+    });
+}
+
+// Til ko'rsatkichini yangilash
+function updateLanguageDisplay() {
+    const display = document.getElementById('currentLanguageDisplay');
+    if (!display) return;
+    
+    if (useSystemLanguage) {
+        const systemLang = navigator.language.substring(0, 2);
+        const lang = languages.find(l => l.id === systemLang) || languages[0];
+        display.textContent = lang.name;
+    } else {
+        const lang = languages.find(l => l.id === currentLanguage) || languages[0];
+        display.textContent = lang.name;
+    }
+}
+
+// Avatar tizimini ishga tushirish
+function initAvatarSystem() {
+    selectedAvatar = AvatarSystem.loadUserAvatar();
+    updateAvatarPreview();
+    populateAvatarOptions();
+}
+
+// Avatar previewni yangilash
+function updateAvatarPreview() {
+    const previewSmall = document.getElementById('avatarPreview');
+    const previewLarge = document.getElementById('avatarPreviewLarge');
+    AvatarSystem.updatePreview(selectedAvatar, previewSmall, previewLarge);
+}
+
+// Avatar opsiyalarini to'ldirish
+function populateAvatarOptions() {
+    const container = document.getElementById('avatarOptions');
+    AvatarSystem.populateOptions(container, selectedAvatar, function(newAvatar) {
+        selectedAvatar = newAvatar;
+        updateAvatarPreview();
+    });
+}
+
+// Account ma'lumotlarini yangilash
+function updateAccountInfo() {
+    try {
+        const user = JSON.parse(localStorage.getItem('wzCurrentUser')) || { 
+            displayName: 'User', 
+            username: '@user123', 
+            email: 'user@example.com' 
+        };
+        
+        document.getElementById('displayNameValue').textContent = user.displayName;
+        document.getElementById('usernameValue').textContent = user.username;
+        document.getElementById('emailValue').textContent = user.email;
+        document.getElementById('currentDisplayNameText').textContent = user.displayName;
+        document.getElementById('currentUsernameText').textContent = user.username;
+        document.getElementById('currentEmailText').textContent = user.email;
+    } catch(e) {
+        console.error('Account ma\'lumotlarini yangilashda xato:', e);
+    }
+}
+
+// Event listenerlarni ishga tushirish
+function initEventListeners() {
+    try {
+        document.getElementById('focusMusicToggle')?.addEventListener('change', function() {
+            localStorage.setItem('wzFocusMusic', JSON.stringify({ enabled: this.checked }));
+            showToast(translations[currentLanguage]['settingsSaved']);
+        });
+        
+        document.getElementById('aiEnabledToggle')?.addEventListener('change', function() {
+            localStorage.setItem('wzAiEnabled', JSON.stringify({ enabled: this.checked }));
+            showToast(translations[currentLanguage]['settingsSaved']);
+        });
+        
+        document.getElementById('accountSyncToggle')?.addEventListener('change', function() {
+            localStorage.setItem('wzAccountSync', JSON.stringify({ enabled: this.checked }));
+            showToast(translations[currentLanguage]['settingsSaved']);
+        });
+        
+        document.getElementById('volumeSlider')?.addEventListener('input', function() {
+            document.getElementById('currentVolumeDisplay').textContent = `${this.value}%`;
+        });
+        
+        document.getElementById('avatarUpload')?.addEventListener('change', handleAvatarUpload);
+        
+        document.getElementById('displayNameInput')?.addEventListener('input', validateDisplayName);
+        document.getElementById('usernameInput')?.addEventListener('input', validateUsername);
+        document.getElementById('emailInput')?.addEventListener('input', validateEmail);
+        document.getElementById('confirmEmailInput')?.addEventListener('input', validateEmail);
+        document.getElementById('newPasswordInput')?.addEventListener('input', validatePassword);
+        document.getElementById('confirmNewPasswordInput')?.addEventListener('input', validatePassword);
+    } catch(e) {
+        console.error('Event listenerlarni ishga tushirishda xato:', e);
+    }
+}
+
+// Avatar yuklash
+function handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!file.type.match('image.*')) {
+        showToast(translations[currentLanguage]['invalidFile']);
+        return;
+    }
+    
+    if (file.size > 2 * 1024 * 1024) {
+        showToast('Image must be less than 2MB');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        selectedAvatar = { 
+            type: 'custom', 
+            id: 'custom', 
+            icon: 'fa-user',
+            color: 'blue',
+            data: e.target.result 
+        };
+        updateAvatarPreview();
+        showToast('Custom image loaded');
+    };
+    reader.readAsDataURL(file);
+}
+
+// ==================== MODAL FUNKSIYALAR ====================
+
+function openAvatarSelector() {
+    const modal = document.getElementById('avatarModal');
+    if (!modal) return;
+    
+    populateAvatarOptions();
+    updateModalTranslations();
+    modal.style.display = 'flex';
+}
+
+function closeAvatarModal() {
+    document.getElementById('avatarModal').style.display = 'none';
+}
+
+function saveAvatar() {
+    if (AvatarSystem.saveAvatar(selectedAvatar)) {
+        closeAvatarModal();
+        showSuccessModal('changesSaved', 'changesSavedDesc');
+    } else {
+        showToast('Avatar saqlashda xato yuz berdi');
+    }
+}
+
+function changeDisplayName() {
+    document.getElementById('displayNameModal').style.display = 'flex';
+    updateModalTranslations();
+}
+
+function closeDisplayNameModal() {
+    document.getElementById('displayNameModal').style.display = 'none';
+}
+
+function validateDisplayName() {
+    const input = document.getElementById('displayNameInput');
+    const error = document.getElementById('displayNameError');
+    const btn = document.getElementById('saveDisplayNameBtn');
+    
+    if (!input || !error || !btn) return false;
+    
+    if (!input.value.trim()) {
+        error.textContent = translations[currentLanguage]['displayNameRequired'];
+        error.classList.add('show');
+        btn.disabled = true;
+        return false;
+    }
+    
+    if (input.value.length > 30) {
+        error.textContent = translations[currentLanguage]['displayNameTooLong'];
+        error.classList.add('show');
+        btn.disabled = true;
+        return false;
+    }
+    
+    error.classList.remove('show');
+    btn.disabled = false;
+    return true;
+}
+
+function saveDisplayName() {
+    if (!validateDisplayName()) return;
+    
+    const newName = document.getElementById('displayNameInput').value.trim();
+    let user = JSON.parse(localStorage.getItem('wzCurrentUser')) || {};
+    user.displayName = newName;
+    localStorage.setItem('wzCurrentUser', JSON.stringify(user));
+    
+    document.getElementById('displayNameValue').textContent = newName;
+    document.getElementById('currentDisplayNameText').textContent = newName;
+    
+    closeDisplayNameModal();
+    showSuccessModal('changesSaved', 'changesSavedDesc');
+}
+
+function changeUsername() {
+    document.getElementById('usernameModal').style.display = 'flex';
+    updateModalTranslations();
+}
+
+function closeUsernameModal() {
+    document.getElementById('usernameModal').style.display = 'none';
+}
+
+function validateUsername() {
+    const input = document.getElementById('usernameInput');
+    const error = document.getElementById('usernameError');
+    const btn = document.getElementById('saveUsernameBtn');
+    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+    
+    if (!input || !error || !btn) return false;
+    
+    if (!input.value.trim()) {
+        error.textContent = translations[currentLanguage]['usernameRequired'];
+        error.classList.add('show');
+        btn.disabled = true;
+        return false;
+    }
+    
+    if (!usernameRegex.test(input.value)) {
+        error.textContent = translations[currentLanguage]['usernameInvalid'];
+        error.classList.add('show');
+        btn.disabled = true;
+        return false;
+    }
+    
+    error.classList.remove('show');
+    btn.disabled = false;
+    return true;
+}
+
+function saveUsername() {
+    if (!validateUsername()) return;
+    
+    const newUsername = '@' + document.getElementById('usernameInput').value.trim();
+    let user = JSON.parse(localStorage.getItem('wzCurrentUser')) || {};
+    user.username = newUsername;
+    localStorage.setItem('wzCurrentUser', JSON.stringify(user));
+    
+    document.getElementById('usernameValue').textContent = newUsername;
+    document.getElementById('currentUsernameText').textContent = newUsername;
+    
+    closeUsernameModal();
+    showSuccessModal('changesSaved', 'changesSavedDesc');
+}
+
+function changeEmail() {
+    document.getElementById('emailModal').style.display = 'flex';
+    updateModalTranslations();
+}
+
+function closeEmailModal() {
+    document.getElementById('emailModal').style.display = 'none';
+}
+
+function validateEmail() {
+    const email = document.getElementById('emailInput')?.value;
+    const confirmEmail = document.getElementById('confirmEmailInput')?.value;
+    const emailError = document.getElementById('emailError');
+    const confirmError = document.getElementById('confirmEmailError');
+    const btn = document.getElementById('saveEmailBtn');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!email || !confirmEmail || !emailError || !confirmError || !btn) return false;
+    
+    let isValid = true;
+    
+    if (!emailRegex.test(email)) {
+        emailError.textContent = translations[currentLanguage]['emailInvalid'];
+        emailError.classList.add('show');
+        isValid = false;
+    } else {
+        emailError.classList.remove('show');
+    }
+    
+    if (email !== confirmEmail) {
+        confirmError.textContent = translations[currentLanguage]['emailsDontMatch'];
+        confirmError.classList.add('show');
+        isValid = false;
+    } else {
+        confirmError.classList.remove('show');
+    }
+    
+    btn.disabled = !isValid;
+    return isValid;
+}
+
+function saveEmail() {
+    if (!validateEmail()) return;
+    
+    const newEmail = document.getElementById('emailInput').value.trim();
+    let user = JSON.parse(localStorage.getItem('wzCurrentUser')) || {};
+    user.email = newEmail;
+    localStorage.setItem('wzCurrentUser', JSON.stringify(user));
+    
+    document.getElementById('emailValue').textContent = newEmail;
+    document.getElementById('currentEmailText').textContent = newEmail;
+    
+    closeEmailModal();
+    showSuccessModal('changesSaved', 'changesSavedDesc');
+}
+
+function changePassword() {
+    document.getElementById('passwordModal').style.display = 'flex';
+    updateModalTranslations();
+}
+
+function closePasswordModal() {
+    document.getElementById('passwordModal').style.display = 'none';
+}
+
+function togglePasswordVisibility(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (!input || !icon) return;
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash input-icon';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye input-icon';
+    }
+}
+
+function validatePassword() {
+    const newPassword = document.getElementById('newPasswordInput')?.value || '';
+    const confirmPassword = document.getElementById('confirmNewPasswordInput')?.value || '';
+    const currentPassword = document.getElementById('currentPasswordInput')?.value || '';
+    const error = document.getElementById('newPasswordError');
+    const confirmError = document.getElementById('confirmNewPasswordError');
+    const currentError = document.getElementById('currentPasswordError');
+    const btn = document.getElementById('savePasswordBtn');
+    
+    if (!error || !confirmError || !currentError || !btn) return false;
+    
+    let isValid = true;
+    
+    if (!currentPassword) {
+        currentError.textContent = translations[currentLanguage]['currentPasswordRequired'];
+        currentError.classList.add('show');
+        isValid = false;
+    } else {
+        currentError.classList.remove('show');
+    }
+    
+    const hasLength = newPassword.length >= 8;
+    const hasLetter = /[a-zA-Z]/.test(newPassword);
+    const hasNumber = /\d/.test(newPassword);
+    
+    const reqLength = document.getElementById('reqLength');
+    const reqLetter = document.getElementById('reqLetter');
+    const reqNumber = document.getElementById('reqNumber');
+    
+    if (reqLength) reqLength.className = `requirement-item ${hasLength ? 'valid' : 'invalid'}`;
+    if (reqLetter) reqLetter.className = `requirement-item ${hasLetter ? 'valid' : 'invalid'}`;
+    if (reqNumber) reqNumber.className = `requirement-item ${hasNumber ? 'valid' : 'invalid'}`;
+    
+    if (!hasLength || !hasLetter || !hasNumber) {
+        error.textContent = translations[currentLanguage]['passwordInvalid'];
+        error.classList.add('show');
+        isValid = false;
+    } else {
+        error.classList.remove('show');
+    }
+    
+    if (newPassword !== confirmPassword) {
+        confirmError.textContent = translations[currentLanguage]['passwordsDontMatch'];
+        confirmError.classList.add('show');
+        isValid = false;
+    } else {
+        confirmError.classList.remove('show');
+    }
+    
+    btn.disabled = !isValid;
+    return isValid;
+}
+
+function savePassword() {
+    if (!validatePassword()) return;
+    closePasswordModal();
+    showSuccessModal('changesSaved', 'changesSavedDesc');
+}
+
+function openLanguageModal() {
+    const modal = document.getElementById('languageModal');
+    const languageList = document.getElementById('languageList');
+    const systemOption = document.getElementById('systemOption');
+    
+    if (!modal || !languageList || !systemOption) return;
+    
+    systemOption.classList.toggle('active', useSystemLanguage);
+    
+    languageList.innerHTML = '';
+    languages.forEach(lang => {
+        const isActive = !useSystemLanguage && currentLanguage === lang.id;
+        const item = document.createElement('div');
+        item.className = `language-item ${isActive ? 'active' : ''}`;
+        item.dataset.lang = lang.id;
+        item.onclick = () => selectLanguage(lang.id);
+        item.innerHTML = `
+            <div class="language-info">
+                <div class="language-flag">${lang.flag}</div>
+                <div class="language-details">
+                    <div class="language-name">${lang.name}</div>
+                    <div class="language-native">${lang.native}</div>
+                </div>
+            </div>
+            <div class="language-check"><i class="fas fa-check"></i></div>
+        `;
+        languageList.appendChild(item);
+    });
+    
+    updateModalTranslations();
+    modal.style.display = 'flex';
+}
+
+function closeLanguageModal() {
+    document.getElementById('languageModal').style.display = 'none';
+}
+
+function selectLanguage(langId) {
+    selectedLanguage = langId;
+    useSystemLanguage = false;
+    
+    document.querySelectorAll('.language-item').forEach(item => item.classList.remove('active'));
+    const selected = document.querySelector(`.language-item[data-lang="${langId}"]`);
+    if (selected) selected.classList.add('active');
+    
+    document.getElementById('systemOption')?.classList.remove('active');
+}
+
+function selectSystemLanguage() {
+    useSystemLanguage = true;
+    selectedLanguage = navigator.language.substring(0, 2);
+    
+    document.querySelectorAll('.language-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('systemOption')?.classList.add('active');
+}
+
+function applyLanguage() {
+    let newLanguage;
+    
+    if (useSystemLanguage) {
+        const systemLang = navigator.language.substring(0, 2);
+        newLanguage = languages.some(l => l.id === systemLang) ? systemLang : 'en';
+    } else {
+        newLanguage = selectedLanguage;
+    }
+    
+    const languageSettings = {
+        language: useSystemLanguage ? null : selectedLanguage,
+        useSystemLanguage: useSystemLanguage,
+        lastChanged: new Date().toISOString()
+    };
+    
+    localStorage.setItem('wzLanguageSettings', JSON.stringify(languageSettings));
+    localStorage.setItem('wzCurrentLanguage', newLanguage);
+    
+    currentLanguage = newLanguage;
+    document.getElementById('htmlLang').lang = currentLanguage;
+    
+    closeLanguageModal();
+    showLanguagePreview();
+    updateUI();
+    updateLanguageDisplay();
+    broadcastLanguageChange();
+}
+
+function openVolumeSlider() {
+    const modal = document.getElementById('volumeModal');
+    if (!modal) return;
+    
+    const volumeSettings = JSON.parse(localStorage.getItem('wzVolumeSettings')) || { volume: 70 };
+    document.getElementById('volumeSlider').value = volumeSettings.volume;
+    document.getElementById('currentVolumeDisplay').textContent = `${volumeSettings.volume}%`;
+    
+    updateModalTranslations();
+    modal.style.display = 'flex';
+}
+
+function closeVolumeModal() {
+    document.getElementById('volumeModal').style.display = 'none';
+}
+
+function saveVolume() {
+    const volumeValue = document.getElementById('volumeSlider').value;
+    const volumeSettings = { volume: parseInt(volumeValue) };
+    localStorage.setItem('wzVolumeSettings', JSON.stringify(volumeSettings));
+    document.getElementById('volumeValue').textContent = `${volumeValue}%`;
+    closeVolumeModal();
+    showToast(translations[currentLanguage]['settingsSaved']);
+}
+
+function showSuccessModal(titleKey, messageKey) {
+    const modal = document.getElementById('successModal');
+    const title = document.getElementById('successTitle');
+    const message = document.getElementById('successMessage');
+    const checkmark = document.getElementById('successCheckmark');
+    
+    if (!modal || !title || !message || !checkmark) return;
+    
+    title.textContent = translations[currentLanguage][titleKey] || translations[currentLanguage]['changesSaved'];
+    message.textContent = translations[currentLanguage][messageKey] || translations[currentLanguage]['changesSavedDesc'];
+    
+    checkmark.classList.add('show');
+    modal.style.display = 'flex';
+    
+    setTimeout(closeSuccessModal, 2000);
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    const checkmark = document.getElementById('successCheckmark');
+    if (modal) modal.style.display = 'none';
+    if (checkmark) checkmark.classList.remove('show');
+}
+
+function showLanguagePreview() {
+    const preview = document.getElementById('languagePreview');
+    const previewFlag = document.getElementById('previewFlag');
+    const previewTitle = document.getElementById('previewTitle');
+    
+    if (!preview || !previewFlag || !previewTitle) return;
+    
+    const newLang = languages.find(l => l.id === currentLanguage) || languages[0];
+    previewFlag.textContent = newLang.flag;
+    previewTitle.textContent = newLang.name;
+    
+    updateModalTranslations();
+    preview.classList.add('show');
+    
+    setTimeout(() => preview.classList.remove('show'), 3000);
+}
+
+function closePreview() {
+    document.getElementById('languagePreview')?.classList.remove('show');
+}
+
+function updateModalTranslations() {
+    document.querySelectorAll('.language-modal [data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = translations[currentLanguage][key];
+        if (translation) {
+            if (element.tagName === 'INPUT' && element.placeholder !== undefined) {
+                element.placeholder = translation;
+            } else {
+                element.textContent = translation;
+            }
+        }
+    });
+}
+
+// ==================== BOSHQA FUNKSIYALAR ====================
+
+function changeDefaultCategory() {
+    const categories = {
+        personal: translations[currentLanguage]['categoryPersonal'],
+        work: translations[currentLanguage]['categoryWork']
+    };
+    
+    const current = document.getElementById('defaultCategoryValue').textContent.toLowerCase();
+    const currentKey = Object.keys(categories).find(key => categories[key].toLowerCase() === current) || 'personal';
+    const keys = Object.keys(categories);
+    const nextKey = keys[(keys.indexOf(currentKey) + 1) % keys.length];
+    
+    document.getElementById('defaultCategoryValue').textContent = categories[nextKey];
+    
+    const settings = JSON.parse(localStorage.getItem('wzSettings')) || {};
+    settings.defaultCategory = nextKey;
+    localStorage.setItem('wzSettings', JSON.stringify(settings));
+    
+    showToast(`${translations[currentLanguage]['defaultCategory']}: ${categories[nextKey]}`);
+}
+
+function updateProfile() {
+    alert(translations[currentLanguage]['comingSoon'] || 'Coming soon!');
+}
+
+function setAPIKey() {
+    const apiKey = prompt(translations[currentLanguage]['enterAPIKey'] || 'Enter your API key:');
+    if (apiKey) {
+        localStorage.setItem('wzApiKey', apiKey);
+        document.getElementById('apiKeyStatus').textContent = translations[currentLanguage]['set'] || 'Set';
+        showToast(translations[currentLanguage]['apiKeySaved'] || 'API key saved');
+    }
+}
+
+function exportData() {
+    const data = {
+        tasks: JSON.parse(localStorage.getItem('wzTasks') || '[]'),
+        settings: JSON.parse(localStorage.getItem('wzSettings') || '{}'),
+        languageSettings: JSON.parse(localStorage.getItem('wzLanguageSettings') || '{}'),
+        exportDate: new Date().toISOString(),
+        version: '0.0.21'
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `warptask-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    
+    showToast(translations[currentLanguage]['exportData'] + ' ' + translations[currentLanguage]['success']);
+}
+
+function importData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.tasks) localStorage.setItem('wzTasks', JSON.stringify(data.tasks));
+                if (data.settings) localStorage.setItem('wzSettings', JSON.stringify(data.settings));
+                if (data.languageSettings) localStorage.setItem('wzLanguageSettings', JSON.stringify(data.languageSettings));
+                
+                showToast(translations[currentLanguage]['importData'] + ' ' + translations[currentLanguage]['success']);
+                setTimeout(() => window.location.reload(), 1000);
+            } catch(error) {
+                showToast(translations[currentLanguage]['error'] + ': ' + (translations[currentLanguage]['invalidFile'] || 'Invalid file format'));
+            }
+        };
+        
+        reader.readAsText(file);
+    };
+    
+    input.click();
+}
+
+function clearAllData() {
+    if (!confirm(translations[currentLanguage]['clearAllDataConfirm'])) return;
+    
+    const languageSettings = localStorage.getItem('wzLanguageSettings');
+    
+    localStorage.removeItem('wzTasks');
+    localStorage.removeItem('wzSettings');
+    localStorage.removeItem('wzXP');
+    localStorage.removeItem('wzAchievements');
+    localStorage.removeItem('wzVolumeSettings');
+    localStorage.removeItem('wzApiKey');
+    localStorage.removeItem('wzFocusMusic');
+    localStorage.removeItem('wzAiEnabled');
+    localStorage.removeItem('wzAccountSync');
+    
+    if (languageSettings) {
+        localStorage.setItem('wzLanguageSettings', languageSettings);
+    }
+    
+    showToast(translations[currentLanguage]['allDataCleared']);
+    setTimeout(() => window.location.href = 'index.html', 1000);
+}
+
+function logout() {
+    if (!confirm(translations[currentLanguage]['confirmLogout'])) return;
+    
+    localStorage.setItem('wzIsLoggedIn', 'false');
+    localStorage.removeItem('wzCurrentUser');
+    window.location.href = 'login.html';
+}
+
+function deleteAccount() {
+    if (!confirm(translations[currentLanguage]['confirmDeleteAccount'])) return;
+    
+    showToast(translations[currentLanguage]['deletingAccount']);
+    
+    setTimeout(() => {
+        localStorage.clear();
+        showToast(translations[currentLanguage]['accountDeleted']);
+        setTimeout(() => window.location.href = 'login.html', 1000);
+    }, 1000);
+}
+
+function showAbout() {
+    alert(translations[currentLanguage]['aboutText']);
+}
+
+function showToast(message) {
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'toastSlideDown 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function broadcastLanguageChange() {
+    const event = {
+        type: 'LANGUAGE_CHANGED',
+        language: currentLanguage,
+        timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem('wzLanguageEvent', JSON.stringify(event));
+    localStorage.setItem('wzLanguageRefresh', Date.now().toString());
+    
+    try {
+        if (typeof BroadcastChannel !== 'undefined') {
+            const channel = new BroadcastChannel('wz_language_channel');
+            channel.postMessage(event);
+        }
+    } catch(e) {}
+}
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then(reg => console.log('Service Worker registered:', reg.scope))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    });
+}
+
+
+      
+    </script>
+    <script src="js/global.js"></script>
+  </body>
+</html>

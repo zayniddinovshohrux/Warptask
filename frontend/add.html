@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Add Task | WarpTask</title>
+    <link rel="manifest" href="/manifest.json" />
+
+    <link rel="shortcut icon" href="./imgs/warptaskbetaimg.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="bottom_nav.css" />
+    <link rel="stylesheet" href="root.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--white);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: -12px;
+        min-height: 100vh;
+      }
+
+      
+      .form-section {
+        background: rgba(28, 28, 30, 0.7);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 34px;
+        padding: 22px;
+        margin-bottom: 7px;
+        box-shadow: var(--shadow);
+      }
+
+      .input-box {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .section-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--gray);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Input Fields */
+      .input-field {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 17px;
+        background: transparent;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--light-gray);
+        margin-bottom: 16px;
+        color: var(--white);
+        transition: all 0.4s ease;
+      }
+
+      .input-field:focus {
+        border-bottom: 2px solid var(--blue);
+      }
+
+      .input-field::placeholder {
+        color: var(--light-gray);
+      }
+
+      .voice-input-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        max-width: 30px;
+        width: 100%;
+        padding: 10px;
+        max-height: 30px;
+        color: var(--white);
+        margin-top: 10px;
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .voice-input-btn:hover {
+        animation: pulse 1.5s infinite;
+        border-radius: 50%;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 #0071e382;
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(255, 59, 48, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+        }
+      }
+
+      /* Selection Groups */
+      .selection-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .selection-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--background);
+        cursor: pointer;
+      }
+
+      .selection-item:last-child {
+        border-bottom: none;
+      }
+
+      .selection-label {
+        flex: 1;
+        font-size: 17px;
+        font-weight: 500;
+      }
+
+      .selection-value {
+        color: var(--gray);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .selection-arrow {
+        color: var(--light-gray);
+        font-size: 14px;
+      }
+
+      /* Quick Actions */
+      .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        margin-top: 20px;
+      }
+
+      .quick-action {
+        background: var(--glass-bg);
+        box-shadow: var(--shadow);
+        border:var(--glass--border);
+        border-radius: 20px;
+        padding: 14px 23px;
+        text-align: center;
+        font-size: 15px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .quick-action:hover {
+        background: var(--blue);
+        color: var(--white);
+        transform: scale(1.02);
+      }
+
+      .quick-action i {
+        font-size: 20px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .quick-action span {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Effort Estimation */
+      .effort-section {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: var(--glass--border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+        margin-bottom: 10px;
+      }
+
+      .effort-stars {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+      }
+
+      .effort-star {
+        font-size: 28px;
+        color: var(--light-gray);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .effort-star:hover,
+      .effort-star.active {
+        color: var(--yellow);
+        transform: scale(1.02);
+      }
+
+      .effort-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--gray);
+        margin-top: 5px;
+      }
+
+      /* Repeat Options */
+      .repeat-section {
+        background: var(--glass-bg);
+        border: var(--glass--border);
+        border-radius: 26px;
+        padding: 12px;
+        margin-bottom: 10px;
+        box-shadow: var(--shadow);
+      }
+
+      .repeat-options {
+        display: grid;
+        grid-template-columns:1fr 2fr;
+        gap: 4px;
+        margin-top: 10px;
+        justify-content: space-evenly;
+      }
+
+      .repeat-option {
+        background: var(--glass-bg);
+        backdrop-filter: blur(7px);
+        box-shadow: var(--shadow);
+        -webkit-backdrop-filter: blur(7px);
+        border: var(--glass--border);
+        border-radius: 16px;
+        width: 100%;
+        padding: 10px 5px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: var(--transition);
+        font-size: 15px;
+      }
+
+      .repeat-option:hover {
+        background: var(--blue);
+      }
+
+      .repeat-option.active {
+        background: var(--blue);
+        border-color: var(--blue);
+      }
+
+      /* Add Button */
+      .add-button {
+        position: fixed;
+        bottom: 54px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--blue);
+        color: var(--white);
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow:var(--element-shadow);
+        z-index: 100;
+      }
+
+      .add-button:hover {
+        transform: translateX(-50%) scale(1.1);
+       
+      }
+
+      .add-button i {
+        font-size: 24px;
+      }
+
+      .footer {
+        margin-top: 50px;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+      }
+
+      .modal-content {
+        background: var(--glass-bg); 
+        backdrop-filter: blur(7px) saturate(200%);
+        -webkit-backdrop-filter: blur(7px) saturate(200%);
+        border: var(--glass--border);
+        box-shadow: var(--shadow);
+        padding: 15px;
+        width: 100%;
+        max-width: 340px;
+        border-radius: 20px;
+        max-height: 80vh;
+        color: var(--ios-white);
+        overflow-y: auto;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        box-sizing: border-box;
+        animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 23px;
+        color: var(--ios-gray);
+        cursor: pointer;
+      }
+
+      .modal-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .modal-option {
+        padding: 14px 15px;
+        background: var(--glass-bg); 
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        border: var(--glass--border);
+        box-shadow: var(--shadow);
+        border-radius: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+        color: #ffff;
+      }
+
+      .modal-option.active {
+        background: var(--blue);
+      }
+
+      /* Suggestions Popup */
+      .suggestions-popup {
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(7px);
+        border: var(--glass--border);
+        border-radius: 21px;
+        box-shadow: var(--shadow);
+        margin-top: 4px;
+        z-index:999;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+      }
+
+      .suggestion-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: var(--transition);
+      }
+
+      .suggestion-item:hover {
+        background: rgba(0, 122, 255, 0.2);
+      }
+
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Animations */
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes slideInDown {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 400px) {
+        .quick-actions {
+          grid-template-columns:1fr 2fr;
+        }
+
+        .repeat-options {
+          grid-template-columns: 1fr 2fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Task Details Section -->
+      <div class="form-section">
+        <div class="section-title" data-i18n="taskDetails">
+          <i class="fas fa-pencil-alt"></i>
+          Task Details
+        </div>
+
+        <!-- Voice Input -->
+
+        <div class="input-box">
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Task title"
+            id="taskTitle"
+            oninput="showSuggestions()"
+          /><button
+            class="voice-input-btn"
+            onclick="startVoiceInput('taskTitle')"
+          >
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
+        <div class="suggestions-popup" id="suggestionsPopup"></div>
+
+        <div class="input-box">
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Add note"
+            id="taskNote"
+          /><button
+            class="voice-input-btn"
+            onclick="startVoiceInput('taskNote')"
+          >
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Effort Estimation Section -->
+      <div class="effort-section">
+        <div class="section-title">
+          <span data-i18n="effortEstimation">Effort Estimation</span>
+        </div>
+        <div class="effort-stars" id="effortStars">
+          <i class="far fa-star effort-star" data-value="1"></i>
+          <i class="far fa-star effort-star" data-value="2"></i>
+          <i class="far fa-star effort-star" data-value="3"></i>
+          <i class="far fa-star effort-star" data-value="4"></i>
+          <i class="far fa-star effort-star" data-value="5"></i>
+        </div>
+        <div class="effort-labels">
+          <span data-i18n="easy">Easy</span>
+          <span data-i18n="medium">Medium</span>
+          <span data-i18n="hard">Hard</span>
+        </div>
+      </div>
+
+      <!-- Repeat Options Section -->
+
+      <!-- Settings Section -->
+      <div class="form-section">
+        <div class="selection-group">
+          <div class="selection-item" onclick="openModal('category')">
+            <span class="selection-label" data-i18n="category">Category</span>
+            <span
+              class="selection-value"
+              id="categoryValue"
+              data-i18n="personal"
+            >
+              <span class="category-emoji">🧩</span>
+              Personal
+              <i class="fas fa-chevron-right selection-arrow"></i>
+            </span>
+          </div>
+          <div class="selection-item" onclick="openModal('priority')">
+            <span class="selection-label" data-i18n="priority">Priority</span>
+            <span class="selection-value" id="priorityValue" data-i18n="medium">
+              Medium
+              <i class="fas fa-chevron-right selection-arrow"></i>
+            </span>
+          </div>
+          <div class="selection-item" onclick="openModal('date')">
+            <span class="selection-label" data-i18n="date">Date</span>
+            <span class="selection-value" id="dateValue" data-i18n="notSet">
+              Not set
+              <i class="fas fa-chevron-right selection-arrow"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="repeat-section">
+        <div class="section-title" data-i18n="repeat">Repeat</div>
+        <div class="repeat-options">
+          <div
+            class="repeat-option"
+            data-i18n="none"
+            onclick="setRepeat('none')"
+          >
+            None
+          </div>
+          <div
+            class="repeat-option"
+            data-i18n="daily"
+            onclick="setRepeat('daily')"
+          >
+            Daily
+          </div>
+          <div
+            class="repeat-option"
+            data-i18n="weekly"
+            onclick="setRepeat('weekly')"
+          >
+            Weekly
+          </div>
+          <div
+            class="repeat-option"
+            data-i18n="monthly"
+            onclick="setRepeat('monthly')"
+          >
+            Monthly
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Templates -->
+      <div class="form-section">
+        <div class="section-title" data-i18n="quickAdd">
+          <i class="fas fa-bolt"></i>
+          Quick Add
+        </div>
+        <div class="quick-actions">
+          <div
+            class="quick-action"
+            onclick="fillTemplate('meeting')"
+            data-i18n="meeting"
+          >
+            <i class="fas fa-users"></i>
+            <span>Meeting</span>
+          </div>
+          <div
+            class="quick-action"
+            onclick="fillTemplate('shopping')"
+            data-i18n="shopping"
+          >
+            <i class="fas fa-shopping-cart"></i>
+            <span>Shopping</span>
+          </div>
+          <div
+            class="quick-action"
+            onclick="fillTemplate('workout')"
+            data-i18n="workout"
+          >
+            <i class="fas fa-dumbbell"></i>
+            <span>Workout</span>
+          </div>
+          <div
+            class="quick-action"
+            onclick="fillTemplate('study')"
+            data-i18n="study"
+          >
+            <i class="fas fa-book"></i>
+            <span>Study</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Button -->
+      <button class="add-button" onclick="addTask()">
+        <i class="fas fa-check"></i>
+      </button>
+      <div class="footer"></div>
+      <!-- Bottom Navigation -->
+      <div class="nav">
+        <div class="bottom-nav">
+          <span class="nav-indicator"></span>
+
+          <a href="index.html" class="nav-item" data-link>
+            <i class="fa-solid fa-house-circle-check" id="nav-icon"></i>
+          </a>
+          <a href="calendar.html" class="nav-item" data-link>
+            <i class="fa-solid fa-calendar" id="nav-icon"></i>
+          </a>
+          <a href="add.html" class="nav-item active" data-link>
+            <i class="fa-solid fa-plus" id="nav-icon"></i>
+          </a>
+          <a href="stats.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-chart-pie"></i>
+          </a>
+          <a href="settings.html" class="nav-item" id="nav-icon" data-link>
+            <i class="fa-solid fa-bars"></i>
+          </a>
+        </div>
+         <div class="chat">
+        <a href="xgempage.html" style="color: var(--white)">
+            <i class="fas fa-comments" id="nav-icon"></i>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="categoryModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Choose Category</div>
+          <button class="close-modal" onclick="closeModal('category')">
+            ×
+          </button>
+        </div>
+        <div class="modal-options">
+          <button
+            class="modal-option active"
+            onclick="selectOption('category', '🧩 Personal', 'personal')"
+          >
+            🧩 Personal
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '💼 Work', 'work')"
+          >
+            💼 Work
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🛍️ Shopping', 'shopping')"
+          >
+            🛍️ Shopping
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🏠 Housework', 'housework')"
+          >
+            🏠 Housework
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🎮 Break', 'break')"
+          >
+            🎮 Break
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🛁 Wash', 'wash')"
+          >
+            🛁 Wash
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🫀 Health', 'health')"
+          >
+            🫀 Health
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '📿 Salah', 'salah')"
+          >
+            📿 Salah
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🥪 Food', 'food')"
+          >
+            🥪 Food
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🛏️ Bed', 'bed')"
+          >
+            🛏️ Bed
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '📚 Study', 'study')"
+          >
+            📚 Study
+          </button>
+ 
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🎨 Hobby', 'hobby')"
+          >
+            🎨 Hobby
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('category', '🏋️‍♂️ Sport', 'sport')"
+          >
+            🏋️‍♂️ Sport
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="priorityModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Choose Priority</div>
+          <button class="close-modal" onclick="closeModal('priority')">
+            ×
+          </button>
+        </div>
+        <div class="modal-options">
+          <button
+            class="modal-option"
+            onclick="selectOption('priority', 'Low', 'low')"
+          >
+            Low
+          </button>
+          <button
+            class="modal-option active"
+            onclick="selectOption('priority', 'Medium', 'medium')"
+          >
+            Medium
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('priority', 'High', 'high')"
+          >
+            High
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="dateModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Date</div>
+          <button class="close-modal" onclick="closeModal('date')">×</button>
+        </div>
+        <div class="modal-options">
+          <input
+            type="datetime-local"
+            id="datePicker"
+            style="
+              width: 100%;
+              padding: 12px;
+              border: 1px solid var(--light-gray);
+              border-radius: 8px;
+              margin-bottom: 12px;
+              background: rgba(28, 28, 30, 0.9);
+              color: var(--white);
+            "
+          />
+          <button class="modal-option" onclick="setCustomDate()">
+            Set Date
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('date', 'Today', 'today')"
+          >
+            Today
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('date', 'Tomorrow', 'tomorrow')"
+          >
+            Tomorrow
+          </button>
+          <button
+            class="modal-option"
+            onclick="selectOption('date', 'Next Week', 'nextWeek')"
+          >
+            Next Week
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Current selections
+      let currentSelections = {
+        category: "personal",
+        priority: "medium",
+        date: null,
+        repeat: "none",
+        effort: 3,
+      };
+
+      // Initialize effort stars
+      function initEffortStars() {
+        const stars = document.querySelectorAll(".effort-star");
+        const setEffort = (value) => {
+          stars.forEach((star) => {
+            if (star.dataset.value <= value) {
+              star.classList.remove("far");
+              star.classList.add("fas", "active");
+            } else {
+              star.classList.remove("fas", "active");
+              star.classList.add("far");
+            }
+          });
+          currentSelections.effort = parseInt(value);
+        };
+
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            setEffort(star.dataset.value);
+          });
+        });
+
+        // Set default
+        setEffort(3);
+      }
+
+      // Initialize repeat options
+      function initRepeatOptions() {
+        document.querySelectorAll(".repeat-option").forEach((option) => {
+          option.addEventListener("click", function () {
+            document.querySelectorAll(".repeat-option").forEach((opt) => {
+              opt.classList.remove("active");
+            });
+            this.classList.add("active");
+            currentSelections.repeat = this.textContent.toLowerCase();
+          });
+        });
+
+        // Set default
+        document.querySelector(".repeat-option").classList.add("active");
+      }
+
+      // Voice Input Functionality
+      let recognition = null;
+      let isRecording = false;
+
+      function startVoiceInput(fieldId) {
+        if (
+          !(
+            "webkitSpeechRecognition" in window || "SpeechRecognition" in window
+          )
+        ) {
+          alert(
+            "Sorry, your browser does not support voice input. Try Chrome or Edge.",
+          );
+          return;
+        }
+
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        const voiceBtn = event.target.closest(".voice-input-btn");
+        voiceBtn.classList.add("recording");
+
+        recognition.start();
+        isRecording = true;
+
+        recognition.onresult = function (event) {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById(fieldId).value = transcript;
+
+          // For title field, also show suggestions
+          if (fieldId === "taskTitle") {
+            autoDetectCategory(transcript);
+            showSuggestions();
+          }
+        };
+
+        recognition.onend = function () {
+          voiceBtn.classList.remove("recording");
+          isRecording = false;
+        };
+
+        recognition.onerror = function (event) {
+          console.error("Voice recognition error:", event.error);
+          voiceBtn.classList.remove("recording");
+          isRecording = false;
+        };
+      }
+
+      function stopVoiceInput() {
+        if (recognition && isRecording) {
+          recognition.stop();
+          isRecording = false;
+          document.querySelectorAll(".voice-input-btn").forEach((btn) => {
+            btn.classList.remove("recording");
+          });
+        }
+      }
+
+      // Auto-detect category from text
+      function autoDetectCategory(text) {
+        const textLower = text.toLowerCase();
+        const categoryMap = {
+          work: ["meeting", "report", "deadline", "office", "project", "team"],
+          shopping: ["buy", "grocery", "market", "shop", "purchase", "mall"],
+          health: [
+            "doctor",
+            "medicine",
+            "exercise",
+            "gym",
+            "workout",
+            "fitness",
+          ],
+          study: ["study", "read", "learn", "homework", "exam", "test"],
+          personal: ["call", "email", "clean", "organize", "plan"],
+          housework: ["clean", "laundry", "cook", "dishes", "tidy"],
+          food: ["eat", "lunch", "dinner", "breakfast", "cook", "restaurant"],
+        };
+
+        let detectedCategory = "personal";
+        let maxMatches = 0;
+
+        for (const [category, keywords] of Object.entries(categoryMap)) {
+          let matches = 0;
+          keywords.forEach((keyword) => {
+            if (textLower.includes(keyword)) matches++;
+          });
+          if (matches > maxMatches) {
+            maxMatches = matches;
+            detectedCategory = category;
+          }
+        }
+
+        if (maxMatches > 0) {
+          selectOption(
+            "category",
+            getCategoryDisplay(detectedCategory),
+            detectedCategory,
+          );
+          showNotification(`Category auto-detected: ${detectedCategory}`);
+        }
+      }
+
+      function getCategoryDisplay(category) {
+        const displays = {
+          personal: "🧩 Personal",
+          work: "💼 Work",
+          shopping: "🛍️ Shopping",
+          health: "🫀 Health",
+          study: "📚 Study",
+          housework: "🏠 Housework",
+          food: "🥪 Food",
+        };
+        return displays[category] || "🧩 Personal";
+      }
+
+      // Smart suggestions
+      function showSuggestions() {
+        const input = document.getElementById("taskTitle").value.trim();
+        const popup = document.getElementById("suggestionsPopup");
+
+        if (input.length < 2) {
+          popup.style.display = "none";
+          return;
+        }
+
+        const suggestions = getSmartSuggestions(input);
+
+        if (suggestions.length === 0) {
+          popup.style.display = "none";
+          return;
+        }
+
+        popup.innerHTML = suggestions
+          .map(
+            (suggestion) =>
+              `<div class="suggestion-item" onclick="useSuggestion('${suggestion}')">
+            ${suggestion}
+          </div>`,
+          )
+          .join("");
+
+        popup.style.display = "block";
+        popup.style.animation = "slideInDown 0.3s ease";
+      }
+
+      function getSmartSuggestions(input) {
+        const tasks = JSON.parse(localStorage.getItem("wzTasks")) || [];
+        const inputLower = input.toLowerCase();
+
+        // Get similar previous tasks
+        const similarTasks = tasks
+          .filter(
+            (task) =>
+              task.text.toLowerCase().includes(inputLower) ||
+              inputLower.includes(task.text.toLowerCase().split(" ")[0]),
+          )
+          .slice(0, 5);
+
+        // Common patterns
+        const commonPatterns = [
+          `${input} meeting`,
+          `${input} review`,
+          `Complete ${input}`,
+          `Prepare for ${input}`,
+          `Send ${input} email`,
+        ];
+
+        // Combine and deduplicate
+        const suggestions = new Set();
+        similarTasks.forEach((task) => suggestions.add(task.text));
+        commonPatterns.forEach((pattern) => suggestions.add(pattern));
+
+        return Array.from(suggestions);
+      }
+
+      function useSuggestion(text) {
+        document.getElementById("taskTitle").value = text;
+        document.getElementById("suggestionsPopup").style.display = "none";
+        autoDetectCategory(text);
+      }
+
+      // Close suggestions when clicking outside
+      document.addEventListener("click", function (event) {
+        const popup = document.getElementById("suggestionsPopup");
+        const input = document.getElementById("taskTitle");
+
+        if (!popup.contains(event.target) && event.target !== input) {
+          popup.style.display = "none";
+        }
+      });
+
+      // Set repeat option
+      function setRepeat(type) {
+        currentSelections.repeat = type;
+      }
+
+      // Notification functions
+      function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        notification.className = "task-completion-notification";
+        notification.innerHTML = `
+          <div class="notification-emoji">${type === "success" ? "✅" : "ℹ️"}</div>
+          <div class="notification-content">
+            <div class="notification-message">${message}</div>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+
+      // Modified addTask function with new features
+      function addTask() {
+        const taskTitle = document.getElementById("taskTitle").value.trim();
+        const taskNote = document.getElementById("taskNote").value.trim();
+
+        if (!taskTitle) {
+          alert("Please enter a task title");
+          return;
+        }
+
+        // Auto-category detection if not manually set
+        if (currentSelections.category === "personal") {
+          autoDetectCategory(taskTitle);
+        }
+
+        // Create task object with new features
+        const newTask = {
+          id: Date.now(),
+          text: taskTitle,
+          note: taskNote,
+          category: currentSelections.category,
+          priority: currentSelections.priority,
+          dueDate: currentSelections.date,
+          repeat: currentSelections.repeat,
+          effort: currentSelections.effort,
+          completed: false,
+          createdAt: new Date(),
+          lastModified: new Date(),
+        };
+
+        // Generate recurring tasks if needed
+        const tasksToSave = [newTask];
+        if (currentSelections.repeat !== "none") {
+          const recurringTasks = generateRecurringTasks(newTask);
+          tasksToSave.push(...recurringTasks);
+        }
+
+        // Save to localStorage
+        const existingTasks = JSON.parse(localStorage.getItem("wzTasks")) || [];
+        tasksToSave.forEach((task) => existingTasks.unshift(task));
+        localStorage.setItem("wzTasks", JSON.stringify(existingTasks));
+
+        // Show notification
+        showTaskAddedNotification(newTask);
+
+        // Success and redirect
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      }
+
+      function generateRecurringTasks(task) {
+        const recurringTasks = [];
+        const baseDate = new Date();
+
+        let count = 0;
+        switch (task.repeat) {
+          case "daily":
+            count = 7; // Generate for next 7 days
+            break;
+          case "weekly":
+            count = 4; // Generate for next 4 weeks
+            break;
+          case "monthly":
+            count = 3; // Generate for next 3 months
+            break;
+          default:
+            return [];
+        }
+
+        for (let i = 1; i <= count; i++) {
+          const newDate = new Date(baseDate);
+          switch (task.repeat) {
+            case "daily":
+              newDate.setDate(baseDate.getDate() + i);
+              break;
+            case "weekly":
+              newDate.setDate(baseDate.getDate() + i * 7);
+              break;
+            case "monthly":
+              newDate.setMonth(baseDate.getMonth() + i);
+              break;
+          }
+
+          const recurringTask = {
+            ...task,
+            id: Date.now() + i,
+            dueDate: newDate.toISOString(),
+            isRecurring: true,
+            parentId: task.id,
+          };
+          recurringTasks.push(recurringTask);
+        }
+
+        return recurringTasks;
+      }
+
+      // Existing modal functions (keep as is)
+      function openModal(type) {
+        document.getElementById(type + "Modal").style.display = "flex";
+      }
+
+      function closeModal(type) {
+        document.getElementById(type + "Modal").style.display = "none";
+      }
+
+      function selectOption(type, displayValue, value) {
+        currentSelections[type] = value;
+        document.getElementById(type + "Value").innerHTML =
+          type === "category"
+            ? `<span class="category-emoji">${
+                displayValue.split(" ")[0]
+              }</span> ${
+                displayValue.split(" ")[1]
+              } <i class="fas fa-chevron-right selection-arrow"></i>`
+            : `${displayValue} <i class="fas fa-chevron-right selection-arrow"></i>`;
+
+        const modal = document.getElementById(type + "Modal");
+        const options = modal.querySelectorAll(".modal-option");
+        options.forEach((option) => option.classList.remove("active"));
+        event.target.classList.add("active");
+
+        closeModal(type);
+      }
+
+      function setCustomDate() {
+        const datePicker = document.getElementById("datePicker");
+        if (datePicker.value) {
+          const date = new Date(datePicker.value);
+          const formattedDate =
+            date.toLocaleDateString() +
+            " " +
+            date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+          selectOption("date", formattedDate, datePicker.value);
+        }
+      }
+
+      function fillTemplate(type) {
+        const templates = {
+          meeting: "Team Meeting",
+          shopping: "Grocery Shopping",
+          workout: "Morning Workout",
+          study: "Study Session",
+        };
+        document.getElementById("taskTitle").value = templates[type];
+        autoDetectCategory(templates[type]);
+        document.getElementById("taskTitle").focus();
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", function () {
+        initEffortStars();
+        initRepeatOptions();
+
+        // Auto-detect category when typing
+        document
+          .getElementById("taskTitle")
+          .addEventListener("input", function () {
+            if (this.value.length > 10) {
+              autoDetectCategory(this.value);
+            }
+          });
+      });
+
+      // Keep existing notification functions
+      function showTaskAddedNotification(task) {
+        // Your existing notification code here
+        // (Keep it as is from your original code)
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach((modal) => {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+      };
+
+      // Offline support
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("Service Worker registered:", reg.scope))
+            .catch((err) =>
+              console.log("Service Worker registration failed:", err),
+            );
+        });
+      }
+    </script>
+    <script src="js/language.js"></script>
+    <script src="js/global.js"></script>
+  </body>
+</html>
